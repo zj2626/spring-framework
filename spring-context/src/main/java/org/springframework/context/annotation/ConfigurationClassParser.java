@@ -158,14 +158,20 @@ class ConfigurationClassParser {
 		this.conditionEvaluator = new ConditionEvaluator(registry, environment, resourceLoader);
 	}
 
-
+	/**
+	 * 解析扫描包
+	 * @param configCandidates
+	 */
 	public void parse(Set<BeanDefinitionHolder> configCandidates) {
+		// 循环注解类
 		for (BeanDefinitionHolder holder : configCandidates) {
 			BeanDefinition bd = holder.getBeanDefinition();
 			try {
+				// 解析注解类
 				if (bd instanceof AnnotatedBeanDefinition) {
 					parse(((AnnotatedBeanDefinition) bd).getMetadata(), holder.getBeanName());
 				}
+				// 解析非注解类
 				else if (bd instanceof AbstractBeanDefinition && ((AbstractBeanDefinition) bd).hasBeanClass()) {
 					parse(((AbstractBeanDefinition) bd).getBeanClass(), holder.getBeanName());
 				}
@@ -213,12 +219,23 @@ class ConfigurationClassParser {
 		return this.configurationClasses.keySet();
 	}
 
-
+	/**
+	 * *
+	 * @param configClass
+	 * @throws IOException
+	 */
 	protected void processConfigurationClass(ConfigurationClass configClass) throws IOException {
+		// 判断是否跳过解析 [false]
 		if (this.conditionEvaluator.shouldSkip(configClass.getMetadata(), ConfigurationPhase.PARSE_CONFIGURATION)) {
 			return;
 		}
 
+		/**
+		 * 1.判断当前configClass有没有处理过,处理过的会put进 this.configurationClasses 中
+		 * 2.判断当前处理的ConfigurationClass是否有设置
+		 * 3.判断之前处理的ConfigurationClass是否有设置
+		 * 4.把当前的configClass加入到之前处理的configClass中[addAll]
+		 */
 		ConfigurationClass existingClass = this.configurationClasses.get(configClass);
 		if (existingClass != null) {
 			if (configClass.isImported()) {
@@ -264,6 +281,9 @@ class ConfigurationClassParser {
 		}
 
 		// Process any @PropertySource annotations
+		/**
+		 * 得到类注解@PropertySource, 其可以加载指定配置文件
+		 */
 		for (AnnotationAttributes propertySource : AnnotationConfigUtils.attributesForRepeatable(
 				sourceClass.getMetadata(), PropertySources.class,
 				org.springframework.context.annotation.PropertySource.class)) {
@@ -277,14 +297,21 @@ class ConfigurationClassParser {
 		}
 
 		// Process any @ComponentScan annotations
+		/**
+		 * 得到类注解@ComponentScan,
+		 */
 		Set<AnnotationAttributes> componentScans = AnnotationConfigUtils.attributesForRepeatable(
 				sourceClass.getMetadata(), ComponentScans.class, ComponentScan.class);
 		if (!componentScans.isEmpty() &&
 				!this.conditionEvaluator.shouldSkip(sourceClass.getMetadata(), ConfigurationPhase.REGISTER_BEAN)) {
 			for (AnnotationAttributes componentScan : componentScans) {
+
 				// The config class is annotated with @ComponentScan -> perform the scan immediately
+				System.out.println(">>>>>>>>>> SCAN DETAIL before BeanDefinition: " + this.registry.getBeanDefinitionCount() + " new: " +  componentScan);
 				Set<BeanDefinitionHolder> scannedBeanDefinitions =
 						this.componentScanParser.parse(componentScan, sourceClass.getMetadata().getClassName());
+				System.out.println(">>>>>>>>>> SCAN DETAIL after BeanDefinition:" + this.registry.getBeanDefinitionCount() + " new: " + scannedBeanDefinitions.size());
+
 				// Check the set of scanned definitions for any further config classes and parse recursively if needed
 				for (BeanDefinitionHolder holder : scannedBeanDefinitions) {
 					BeanDefinition bdCand = holder.getBeanDefinition().getOriginatingBeanDefinition();
@@ -641,6 +668,7 @@ class ConfigurationClassParser {
 		try {
 			// Sanity test that we can reflectively read annotations,
 			// including Class attributes; if not -> fall back to ASM
+			// 健全性测试，循环类上注解, 通过反射读取注解内容
 			for (Annotation ann : classType.getAnnotations()) {
 				AnnotationUtils.validateAnnotation(ann);
 			}

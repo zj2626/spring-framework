@@ -77,6 +77,8 @@ abstract class ConfigurationClassUtils {
 	 * @param beanDef the bean definition to check
 	 * @param metadataReaderFactory the current factory in use by the caller
 	 * @return whether the candidate qualifies as (any kind of) configuration class
+	 *
+	 * 判断 beanDef 是不是Spring注解的类
 	 */
 	public static boolean checkConfigurationClassCandidate(
 			BeanDefinition beanDef, MetadataReaderFactory metadataReaderFactory) {
@@ -87,15 +89,18 @@ abstract class ConfigurationClassUtils {
 		}
 
 		AnnotationMetadata metadata;
+		// 判断 bean 是不是注解修饰的类,因为注解类和非注解类其元数据[Metadata]不同, 一个是 AnnotationMetadata, 一个是 StandardAnnotationMetadata
 		if (beanDef instanceof AnnotatedBeanDefinition &&
 				className.equals(((AnnotatedBeanDefinition) beanDef).getMetadata().getClassName())) {
 			// Can reuse the pre-parsed metadata from the given BeanDefinition...
+			// 获得元数据 AnnotationMetadata
 			metadata = ((AnnotatedBeanDefinition) beanDef).getMetadata();
 		}
 		else if (beanDef instanceof AbstractBeanDefinition && ((AbstractBeanDefinition) beanDef).hasBeanClass()) {
 			// Check already loaded Class if present...
 			// since we possibly can't even load the class file for this Class.
 			Class<?> beanClass = ((AbstractBeanDefinition) beanDef).getBeanClass();
+			// 获得元数据 StandardAnnotationMetadata
 			metadata = new StandardAnnotationMetadata(beanClass, true);
 		}
 		else {
@@ -112,9 +117,11 @@ abstract class ConfigurationClassUtils {
 			}
 		}
 
+		// 判断bean是不是 带有@Configuration注解的类,  是的话就添加标识 "full"
 		if (isFullConfigurationCandidate(metadata)) {
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_FULL);
 		}
+		// 判断bean是不是 带@Component，@ComponentScan，@Import，@ImportResource，@Bean 5个注解中的任一个,  是的话就添加标识 "lite"
 		else if (isLiteConfigurationCandidate(metadata)) {
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_LITE);
 		}

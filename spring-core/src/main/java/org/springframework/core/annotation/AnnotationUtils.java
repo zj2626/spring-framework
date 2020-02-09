@@ -1002,6 +1002,8 @@ public abstract class AnnotationUtils {
 	 * @since 4.3.15
 	 * @see Class#getAnnotations()
 	 * @see #getAnnotationAttributes(Annotation)
+	 *
+	 * 执行验证注解, 得到注解中的方法 判断方法返回类型是Class或者Class[]的 调用对应方法
 	 */
 	public static void validateAnnotation(Annotation annotation) {
 		for (Method method : getAttributeMethods(annotation.annotationType())) {

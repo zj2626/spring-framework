@@ -74,9 +74,11 @@ class ApplicationContextAwareProcessor implements BeanPostProcessor {
 	}
 
 
+	// ************************
 	@Override
 	@Nullable
 	public Object postProcessBeforeInitialization(final Object bean, String beanName) throws BeansException {
+//		System.out.println("- ApplicationContextAwareProcessor postProcessBeforeInitialization " + bean);
 		AccessControlContext acc = null;
 
 		if (System.getSecurityManager() != null &&
@@ -99,6 +101,10 @@ class ApplicationContextAwareProcessor implements BeanPostProcessor {
 		return bean;
 	}
 
+	/**
+	 * 检查当前bean实例是否xxxAware子类,是的话赋值给实例必要的属性
+	 * @param bean
+	 */
 	private void invokeAwareInterfaces(Object bean) {
 		if (bean instanceof Aware) {
 			if (bean instanceof EnvironmentAware) {
@@ -116,6 +122,7 @@ class ApplicationContextAwareProcessor implements BeanPostProcessor {
 			if (bean instanceof MessageSourceAware) {
 				((MessageSourceAware) bean).setMessageSource(this.applicationContext);
 			}
+			// 调用实现ApplicationContextAware接口的方法setApplicationContext为该实例属性赋值
 			if (bean instanceof ApplicationContextAware) {
 				((ApplicationContextAware) bean).setApplicationContext(this.applicationContext);
 			}

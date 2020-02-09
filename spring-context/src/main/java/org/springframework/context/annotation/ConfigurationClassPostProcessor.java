@@ -264,12 +264,21 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 
 		for (String beanName : candidateNames) {
 			BeanDefinition beanDef = registry.getBeanDefinition(beanName);
-			if (ConfigurationClassUtils.isFullConfigurationClass(beanDef) ||
-					ConfigurationClassUtils.isLiteConfigurationClass(beanDef)) {
+			// 判断bean 是否已经被处理过, false则把当前bean加入到 configCandidates 中
+			if (
+					// 判断当前bean是不是[full configuration] -> 带有@Configuration注解的类
+					// 判断方式是通过BeanDefinition的标识: "full"
+					ConfigurationClassUtils.isFullConfigurationClass(beanDef) ||
+					// 判断当前bean是不是[lite configuration] -> 带@Component，@ComponentScan，@Import，@ImportResource，@Bean 5个注解中的任一个
+					// 判断方式是通过BeanDefinition的标识: "lite"
+					ConfigurationClassUtils.isLiteConfigurationClass(beanDef))
+			{
 				if (logger.isDebugEnabled()) {
 					logger.debug("Bean definition has already been processed as a configuration class: " + beanDef);
 				}
 			}
+
+			// 判断当前bean是不是有spring注解的类,目前也只有内部的类和@Configuration注解的类
 			else if (ConfigurationClassUtils.checkConfigurationClassCandidate(beanDef, this.metadataReaderFactory)) {
 				configCandidates.add(new BeanDefinitionHolder(beanDef, beanName));
 			}
@@ -280,7 +289,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			return;
 		}
 
-		// Sort by previously determined @Order value, if applicable
+		// 排序: Sort by previously determined @Order value, if applicable
 		configCandidates.sort((bd1, bd2) -> {
 			int i1 = ConfigurationClassUtils.getOrder(bd1.getBeanDefinition());
 			int i2 = ConfigurationClassUtils.getOrder(bd2.getBeanDefinition());
@@ -304,15 +313,19 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			this.environment = new StandardEnvironment();
 		}
 
-		// Parse each @Configuration class
+		// Parse each @Configuration class 解析每一个@Configuration的类
 		ConfigurationClassParser parser = new ConfigurationClassParser(
 				this.metadataReaderFactory, this.problemReporter, this.environment,
 				this.resourceLoader, this.componentScanBeanNameGenerator, registry);
 
+		// configCandidates去重
 		Set<BeanDefinitionHolder> candidates = new LinkedHashSet<>(configCandidates);
 		Set<ConfigurationClass> alreadyParsed = new HashSet<>(configCandidates.size());
 		do {
+			// 扫描包
+			System.out.println(">>>>>>>>>> SCAN before  BeanDefinition: " + registry.getBeanDefinitionCount());
 			parser.parse(candidates);
+			System.out.println(">>>>>>>>>> SCAN after BeanDefinition: " + registry.getBeanDefinitionCount());
 			parser.validate();
 
 			Set<ConfigurationClass> configClasses = new LinkedHashSet<>(parser.getConfigurationClasses());

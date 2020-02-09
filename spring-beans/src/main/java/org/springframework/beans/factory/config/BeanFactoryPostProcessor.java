@@ -41,6 +41,10 @@ import org.springframework.beans.BeansException;
  * @since 06.07.2003
  * @see BeanPostProcessor
  * @see PropertyResourceConfigurer
+ *
+ * 自定义实现有两种方式:
+ * 1. 实现 BeanFactoryPostProcessor
+ * 1. 实现 BeanDefinitionRegistryPostProcessor ( 扩展了BeanFactoryPostProcessor的方法 )
  */
 @FunctionalInterface
 public interface BeanFactoryPostProcessor {

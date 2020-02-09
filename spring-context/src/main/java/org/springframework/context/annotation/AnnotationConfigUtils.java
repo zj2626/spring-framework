@@ -140,27 +140,46 @@ public abstract class AnnotationConfigUtils {
 	/**
 	 * Register all relevant annotation post processors in the given registry.
 	 * @param registry the registry to operate on
-	 * @param source the configuration source element (already extracted)
-	 * that this registration was triggered from. May be {@code null}.
+	 * @param source   the configuration source element (already extracted)
+	 *                 that this registration was triggered from. May be {@code null}.
 	 * @return a Set of BeanDefinitionHolders, containing all bean definitions
 	 * that have actually been registered by this call
+	 * 步骤
+	 * *.给工厂添加AnnotationAwareOrderComparator类的对象用于排序, 添加ContextAnnotationAutowireCandidateResolver实例用于延迟加载
+	 * *.向 BeanDefinitionMap 中注册 ConfigurationClassPostProcessor
+	 * *.向 BeanDefinitionMap 中注册 AutowiredAnnotationBeanPostProcessor
+	 * *.向 BeanDefinitionMap 中注册 CommonAnnotationBeanPostProcessor
+	 * *.向 BeanDefinitionMap 中注册 PersistenceAnnotationBeanPostProcessor
+	 * *.向 BeanDefinitionMap 中注册 EventListenerMethodProcessor
+	 * *.向 BeanDefinitionMap 中注册 DefaultEventListenerFactory
 	 */
 	public static Set<BeanDefinitionHolder> registerAnnotationConfigProcessors(
 			BeanDefinitionRegistry registry, @Nullable Object source) {
+		System.out.println("_||_ AnnotationConfigUtils registerAnnotationConfigProcessors " + registry);
 
+		// 得到 beanFactory(DefaultListableBeanFactory)
 		DefaultListableBeanFactory beanFactory = unwrapDefaultListableBeanFactory(registry);
 		if (beanFactory != null) {
 			if (!(beanFactory.getDependencyComparator() instanceof AnnotationAwareOrderComparator)) {
+				// 添加解析 @Order和	@Priority的功能
 				beanFactory.setDependencyComparator(AnnotationAwareOrderComparator.INSTANCE);
 			}
 			if (!(beanFactory.getAutowireCandidateResolver() instanceof ContextAnnotationAutowireCandidateResolver)) {
+				// 添加处理延迟加载的功能->ContextAnnotationAutowireCandidateResolver
 				beanFactory.setAutowireCandidateResolver(new ContextAnnotationAutowireCandidateResolver());
 			}
 		}
 
+		// BeanDefinitionHolder没有任何作用 就是把BeanDefinition和beanName组合起来 方便传参
 		Set<BeanDefinitionHolder> beanDefs = new LinkedHashSet<>(8);
 
 		if (!registry.containsBeanDefinition(CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME)) {
+			/**
+			 * 在 invokeBeanFactoryPostProcessors 方法中会获得注入的ConfigurationClassPostProcessor
+			 * invokeBeanFactoryPostProcessors委托了多个实现 BeanDefinitionRegistryPostProcessor或者BeanFactoryPostProcessor 接口的类来操作
+			 * 实现接口的类有内部的外部的类,ConfigurationClassPostProcessor为spring内部的类
+			 * @see org.springframework.context.support.PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors(org.springframework.beans.factory.config.ConfigurableListableBeanFactory, java.util.List)
+			 */
 			RootBeanDefinition def = new RootBeanDefinition(ConfigurationClassPostProcessor.class);
 			def.setSource(source);
 			beanDefs.add(registerPostProcessor(registry, def, CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME));
@@ -209,10 +228,21 @@ public abstract class AnnotationConfigUtils {
 		return beanDefs;
 	}
 
+	/**
+	 * ************************************
+	 * registerPostProcessor
+	 * ************************************
+	 *
+	 * @param registry
+	 * @param definition
+	 * @param beanName
+	 * @return
+	 */
 	private static BeanDefinitionHolder registerPostProcessor(
 			BeanDefinitionRegistry registry, RootBeanDefinition definition, String beanName) {
 
 		definition.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
+		// 把生成的beanDefinition放到 工厂的 BeanDefinitionMap 中
 		registry.registerBeanDefinition(beanName, definition);
 		return new BeanDefinitionHolder(definition, beanName);
 	}
