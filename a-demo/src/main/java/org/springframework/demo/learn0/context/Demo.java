@@ -42,8 +42,10 @@ public class Demo {
 			System.out.println();
 
 			((DemoImDao) context.getBean("demoImDaoImpl")).doQuery();
+			System.out.println();
 
 			System.out.println(context.getBean(DemoImService.class) + "\n");
+			System.out.println();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

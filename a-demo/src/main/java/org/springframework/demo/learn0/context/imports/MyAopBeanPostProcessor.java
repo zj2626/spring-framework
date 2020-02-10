@@ -15,7 +15,7 @@ public class MyAopBeanPostProcessor implements BeanPostProcessor, InvocationHand
 	// bean初始化之前
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-		System.out.println("MM-BP MyAopBeanPostProcessor postProcessBeforeInitialization ");
+		System.out.println("MM-BP MyAopBeanPostProcessor postProcessBeforeInitialization " + bean);
 
 		if (beanName.equals("demoImDaoImpl")) {
 			this.target = bean;
