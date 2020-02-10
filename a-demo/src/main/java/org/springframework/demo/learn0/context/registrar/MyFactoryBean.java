@@ -1,4 +1,4 @@
-package org.springframework.demo.learn0.injection.registrar;
+package org.springframework.demo.learn0.context.registrar;
 
 import org.springframework.beans.factory.FactoryBean;
 

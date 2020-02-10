@@ -1,11 +1,11 @@
-package org.springframework.demo.learn0.injection.registrar;
+package org.springframework.demo.learn0.context.registrar;
 
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.type.AnnotationMetadata;
-import org.springframework.demo.learn0.injection.bean.DemoPDao;
+import org.springframework.demo.learn0.context.bean.DemoPDao;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -23,7 +23,7 @@ public class MyImportBeanDefinitionRegistrar implements ImportBeanDefinitionRegi
 	 */
 	@Override
 	public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
-		System.out.println("MMMM MyImportBeanDefinitionRegistrar registerBeanDefinitions " + registry);
+		System.out.println("MM-IBDR MyImportBeanDefinitionRegistrar registerBeanDefinitions ");
 
 		// 扫描结果
 		Class<?>[] clazzes = new Class<?>[]{DemoPDao.class};

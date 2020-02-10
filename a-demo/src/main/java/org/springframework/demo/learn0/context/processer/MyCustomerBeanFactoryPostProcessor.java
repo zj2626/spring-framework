@@ -1,4 +1,4 @@
-package org.springframework.demo.learn0.injection.processer;
+package org.springframework.demo.learn0.context.processer;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -8,7 +8,7 @@ public class MyCustomerBeanFactoryPostProcessor implements BeanFactoryPostProces
 
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-		System.out.println("MMMM MyCustomerBeanFactoryPostProcessor postProcessBeanFactory " + beanFactory);
+		System.out.println("MM-CBFP MyCustomerBeanFactoryPostProcessor postProcessBeanFactory ");
 		// 插手 beanfactory实例化bean过程, 修改某个注入的bean的信息
 //		BeanDefinition definition = beanFactory.getBeanDefinition("demoService");
 //		definition.setScope("prototype");

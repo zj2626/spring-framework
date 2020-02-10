@@ -1,6 +1,8 @@
-package org.springframework.demo.learn0.injection.bean;
+package org.springframework.demo.learn0.context.bean.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.demo.learn0.context.bean.DemoDao;
+import org.springframework.demo.learn0.context.bean.DemoPDao;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;

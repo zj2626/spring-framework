@@ -1,11 +1,11 @@
-package org.springframework.demo.learn0.injection;
+package org.springframework.demo.learn0.context;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.demo.learn0.injection.bean.DemoDao;
-import org.springframework.demo.learn0.injection.bean.DemoPDao;
-import org.springframework.demo.learn0.injection.bean.DemoService;
-import org.springframework.demo.learn0.injection.configuration.SpringConfig;
-import org.springframework.demo.learn0.injection.processer.MyCustomerBeanFactoryPostProcessor;
+import org.springframework.demo.learn0.context.bean.*;
+import org.springframework.demo.learn0.context.bean.impl.DemoService;
+import org.springframework.demo.learn0.context.bean.impl.DemoUpService;
+import org.springframework.demo.learn0.context.configuration.SpringConfig;
+import org.springframework.demo.learn0.context.processer.MyCustomerBeanFactoryPostProcessor;
 
 public class Demo {
 	/**
@@ -35,7 +35,15 @@ public class Demo {
 			System.out.println(context.getBean(DemoService.class) + "\n");
 			System.out.println(context.getBean(DemoService.class) + "\n");
 			System.out.println(context.getBean(DemoDao.class) + "\n");
+
+			System.out.println(context.getBean(DemoUpService.class) + "\n");
+
 			((DemoPDao) context.getBean("demoPDao")).doQuery("ss");
+			System.out.println();
+
+			((DemoImDao) context.getBean("demoImDaoImpl")).doQuery();
+
+			System.out.println(context.getBean(DemoImService.class) + "\n");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

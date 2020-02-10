@@ -273,7 +273,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		Assert.notEmpty(basePackages, "At least one base package must be specified");
 		Set<BeanDefinitionHolder> beanDefinitions = new LinkedHashSet<>();
 		for (String basePackage : basePackages) {
-			// 扫描basePackages下的包, 把扫描到的bean转化为BeanDefinition
+			// 扫描basePackages下的包, 把扫描到的bean转化为BeanDefinition 使用asm读取class文件, 得到的beanDefinition类型为 ScannedGenericBeanDefinition
 			Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
 			for (BeanDefinition candidate : candidates) {
 				// 解析scope
@@ -281,10 +281,11 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 				candidate.setScope(scopeMetadata.getScopeName());
 
 				String beanName = this.beanNameGenerator.generateBeanName(candidate, this.registry);
+				// 设置属性默认值
 				if (candidate instanceof AbstractBeanDefinition) {
-					// 设置属性默认值
 					postProcessBeanDefinition((AbstractBeanDefinition) candidate, beanName);
 				}
+				// 读取注解类配置的属性, 设置
 				if (candidate instanceof AnnotatedBeanDefinition) {
 					AnnotationConfigUtils.processCommonDefinitionAnnotations((AnnotatedBeanDefinition) candidate);
 				}

@@ -1,5 +1,6 @@
-package org.springframework.demo.learn0.injection.bean;
+package org.springframework.demo.learn0.context.bean.impl;
 
+import org.springframework.demo.learn0.context.bean.DemoDao;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;

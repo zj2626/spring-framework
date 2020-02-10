@@ -231,6 +231,7 @@ class ConfigurationClassParser {
 		}
 
 		/**
+		 * 处理 Imported情况, 也就是当前注解类有没有被别的类import
 		 * 1.判断当前configClass有没有处理过,处理过的会put进 this.configurationClasses 中
 		 * 2.判断当前处理的ConfigurationClass是否有设置
 		 * 3.判断之前处理的ConfigurationClass是否有设置
@@ -253,7 +254,7 @@ class ConfigurationClassParser {
 			}
 		}
 
-		// Recursively process the configuration class and its superclass hierarchy.
+		// 只是类转换, 进行封装 Recursively process the configuration class and its superclass hierarchy.
 		SourceClass sourceClass = asSourceClass(configClass);
 		do {
 			sourceClass = doProcessConfigurationClass(configClass, sourceClass);
@@ -275,6 +276,7 @@ class ConfigurationClassParser {
 	protected final SourceClass doProcessConfigurationClass(ConfigurationClass configClass, SourceClass sourceClass)
 			throws IOException {
 
+		// 处理内部类
 		if (configClass.getMetadata().isAnnotated(Component.class.getName())) {
 			// Recursively process any member (nested) classes first
 			processMemberClasses(configClass, sourceClass);
@@ -298,7 +300,7 @@ class ConfigurationClassParser {
 
 		// Process any @ComponentScan annotations
 		/**
-		 * 得到类注解@ComponentScan,
+		 * 得到类注解@ComponentScan, 并进行扫描对应的类加入beanFactory
 		 */
 		Set<AnnotationAttributes> componentScans = AnnotationConfigUtils.attributesForRepeatable(
 				sourceClass.getMetadata(), ComponentScans.class, ComponentScan.class);
@@ -306,7 +308,7 @@ class ConfigurationClassParser {
 				!this.conditionEvaluator.shouldSkip(sourceClass.getMetadata(), ConfigurationPhase.REGISTER_BEAN)) {
 			for (AnnotationAttributes componentScan : componentScans) {
 
-				// The config class is annotated with @ComponentScan -> perform the scan immediately
+				// 扫描普通类 The config class is annotated with @ComponentScan -> perform the scan immediately
 				System.out.println(">>>>>>>>>> SCAN DETAIL before BeanDefinition: " + this.registry.getBeanDefinitionCount() + " new: " +  componentScan);
 				Set<BeanDefinitionHolder> scannedBeanDefinitions =
 						this.componentScanParser.parse(componentScan, sourceClass.getMetadata().getClassName());
@@ -318,6 +320,7 @@ class ConfigurationClassParser {
 					if (bdCand == null) {
 						bdCand = holder.getBeanDefinition();
 					}
+					// 循环调用扫描出来的类, 进行解析 (包括扫描是否包含@ComponentScan注解)
 					if (ConfigurationClassUtils.checkConfigurationClassCandidate(bdCand, this.metadataReaderFactory)) {
 						parse(bdCand.getBeanClassName(), holder.getBeanName());
 					}
@@ -325,6 +328,12 @@ class ConfigurationClassParser {
 			}
 		}
 
+		/**
+		 * 处理@Import, 有三种形式
+		 * 1. 普通类
+		 * 2. ImportSelector
+		 * 3. ImportBeanDefinitionRegistrar
+		 */
 		// Process any @Import annotations
 		processImports(configClass, sourceClass, getImports(sourceClass), true);
 
@@ -580,6 +589,7 @@ class ConfigurationClassParser {
 			this.importStack.push(configClass);
 			try {
 				for (SourceClass candidate : importCandidates) {
+					// ImportSelector
 					if (candidate.isAssignable(ImportSelector.class)) {
 						// Candidate class is an ImportSelector -> delegate to it to determine imports
 						Class<?> candidateClass = candidate.loadClass();
@@ -595,6 +605,7 @@ class ConfigurationClassParser {
 							processImports(configClass, currentSourceClass, importSourceClasses, false);
 						}
 					}
+					// ImportBeanDefinitionRegistrar
 					else if (candidate.isAssignable(ImportBeanDefinitionRegistrar.class)) {
 						// Candidate class is an ImportBeanDefinitionRegistrar ->
 						// delegate to it to register additional bean definitions
@@ -605,6 +616,7 @@ class ConfigurationClassParser {
 								registrar, this.environment, this.resourceLoader, this.registry);
 						configClass.addImportBeanDefinitionRegistrar(registrar, currentSourceClass.getMetadata());
 					}
+					// 普通类
 					else {
 						// Candidate class not an ImportSelector or ImportBeanDefinitionRegistrar ->
 						// process it as an @Configuration class
