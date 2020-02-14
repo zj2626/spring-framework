@@ -14,7 +14,6 @@ public class Demo {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Class<?>[] clazz = new Class<?>[]{DemoPDao.class};
 		try {
 			System.out.println("\n>>>>>>>>>>>>>>>>>>>>> BEGIN <<<<<<<<<<<<<<<<<<<<");
 			AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
@@ -30,9 +29,10 @@ public class Demo {
 			System.out.println("\n>>>>>>>>>>>>>>>>>>>>> REFRESH <<<<<<<<<<<<<<<<<<<<");
 			context.refresh();
 
-			System.out.println("\n>>>>>>>>>>>>>>>>>>>>> FINISH <<<<<<<<<<<<<<<<<<<<");
+			System.out.println("\n>>>>>>>>>>>>>>>>>>>>> FINISH <<<<<<<<<<<<<<<<<<<<<");
 
-			System.out.println(context.getBean(DemoService.class) + "\n");
+			DemoService service = context.getBean(DemoService.class);
+			System.out.println(service + "\n");
 			System.out.println(context.getBean(DemoService.class) + "\n");
 			System.out.println(context.getBean(DemoDao.class) + "\n");
 

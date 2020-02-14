@@ -91,6 +91,7 @@ final class PostProcessorRegistrationDelegate {
 			// PriorityOrdered, Ordered, and the rest.
 			List<BeanDefinitionRegistryPostProcessor> currentRegistryProcessors = new ArrayList<>();
 
+
 			// *************** 得到内部的BeanFactoryPostProcessor ************
 			// First, invoke the BeanDefinitionRegistryPostProcessors that implement PriorityOrdered.
 			// 存放实现了 BeanDefinitionRegistryPostProcessor 的spring内部对象 (目前只有 ConfigurationClassPostProcessor 实现了BeanDefinitionRegistryPostProcessor接口)
@@ -118,7 +119,8 @@ final class PostProcessorRegistrationDelegate {
 			currentRegistryProcessors.clear();
 			// *************** ********************************** ************ **********************************
 
-			// *************** 得到所有的BeanFactoryPostProcessor ************
+
+			// *************** 得到所有的BeanFactoryPostProcessor(排除已经执行过的; 条件:需要实现Ordered接口) ************
 			// Next, invoke the BeanDefinitionRegistryPostProcessors that implement Ordered.
 			// 存放实现了 BeanDefinitionRegistryPostProcessor 的spring管理的对象, 包含内部和前面被扫描到的自定义的类
 			postProcessorNames =
@@ -146,10 +148,13 @@ final class PostProcessorRegistrationDelegate {
 			currentRegistryProcessors.clear();
 			// *************** ********************************** ************ **********************************
 
+
 			// Finally, invoke all other BeanDefinitionRegistryPostProcessors until no further ones appear.
 			boolean reiterate = true;
 			while (reiterate) {
 				reiterate = false;
+				// *************** 得到所有的BeanFactoryPostProcessor(排除已经执行过的) ************
+				// 存放实现了 BeanDefinitionRegistryPostProcessor 的spring管理的对象, 包含内部和前面被扫描到的自定义的类
 				postProcessorNames = beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
 				for (String ppName : postProcessorNames) {
 					if (!processedBeans.contains(ppName)) {
@@ -158,6 +163,13 @@ final class PostProcessorRegistrationDelegate {
 						reiterate = true;
 					}
 				}
+
+				/*
+				 * 1. 排序
+				 * 2. 合并之前的BeanDefinitionRegistryPostProcessor和新扫描到的
+				 * 3. 调用执行 BeanDefinitionRegistryPostProcessors 的方法 postProcessBeanDefinitionRegistry (spring内部的类), 期间会扫描包路径下的Spirng可管理的类
+				 * 4. 清空currentRegistryProcessors
+				 */
 				sortPostProcessors(currentRegistryProcessors, beanFactory);
 				registryProcessors.addAll(currentRegistryProcessors);
 				// >>>>>>>>>>>>>>>>
@@ -165,8 +177,11 @@ final class PostProcessorRegistrationDelegate {
 				System.out.println("=*=*=< PostProcessorRegistrationDelegate invokeBeanFactoryPostProcessors " + currentRegistryProcessors.size() + " | " + currentRegistryProcessors);
 				// <<<<<<<<<<<<<<<<
 				currentRegistryProcessors.clear();
+				// *************** ********************************** ************ **********************************
+
 			}
 
+			// 执行 postProcessBeanFactory 方法
 			// Now, invoke the postProcessBeanFactory callback of all processors handled so far.
 			invokeBeanFactoryPostProcessors(registryProcessors, beanFactory);
 			invokeBeanFactoryPostProcessors(regularPostProcessors, beanFactory);

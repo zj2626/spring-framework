@@ -223,6 +223,7 @@ class ConfigurationClassParser {
 	 * *
 	 * @param configClass
 	 * @throws IOException
+	 *
 	 */
 	protected void processConfigurationClass(ConfigurationClass configClass) throws IOException {
 		// 判断是否跳过解析 [false]
@@ -335,6 +336,7 @@ class ConfigurationClassParser {
 		 * 3. ImportBeanDefinitionRegistrar
 		 */
 		// Process any @Import annotations
+		System.out.println("@Import -- " + sourceClass + "\n\t" + getImports(sourceClass));
 		processImports(configClass, sourceClass, getImports(sourceClass), true);
 
 		// Process any @ImportResource annotations
@@ -575,6 +577,19 @@ class ConfigurationClassParser {
 		}
 	}
 
+	/**
+	 *
+	 * @param configClass
+	 * @param currentSourceClass
+	 * @param importCandidates
+	 * @param checkForCircularImports
+	 * 不同bean的不同注册方式:
+	 *
+	 * 普通类: 通过扫描得到并直接注册
+	 * Import导入的类: 所有的通过@import导入的类都会先加入 configurationClasses (map)变量中 ,之后再进行注册
+	 * ImportSelector导入的类: 所有的通过@import+ImportSelector导入的类都会先加入 configurationClasses (map)变量中 ,之后再进行注册
+	 * ImportBeanDefinitionRegistrar导入的类: 所有的通过@import+ImportBeanDefinitionRegistrar导入的类都会先加入 importBeanDefinitionRegistrars (map)变量中 ,之后调用其registerBeanDefinitions方法进行注册
+	 */
 	private void processImports(ConfigurationClass configClass, SourceClass currentSourceClass,
 			Collection<SourceClass> importCandidates, boolean checkForCircularImports) {
 
