@@ -178,7 +178,7 @@ public abstract class AnnotationConfigUtils {
 			 * 在 invokeBeanFactoryPostProcessors 方法中会获得注入的ConfigurationClassPostProcessor
 			 * invokeBeanFactoryPostProcessors委托了多个实现 BeanDefinitionRegistryPostProcessor或者BeanFactoryPostProcessor 接口的类来操作
 			 * 实现接口的类有内部的外部的类,ConfigurationClassPostProcessor为spring内部的类
-			 * @see org.springframework.context.support.PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors(org.springframework.beans.factory.config.ConfigurableListableBeanFactory, java.util.List)
+			 * @see org.springframework.context.support.PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors()
 			 */
 			RootBeanDefinition def = new RootBeanDefinition(ConfigurationClassPostProcessor.class);
 			def.setSource(source);

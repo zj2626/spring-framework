@@ -219,6 +219,8 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	 */
 	@Override
 	public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) {
+		System.out.println("#######> ConfigurationClassPostProcessor postProcessBeanDefinitionRegistry: " + registry.getBeanDefinitionCount());
+
 		int registryId = System.identityHashCode(registry);
 		if (this.registriesPostProcessed.contains(registryId)) {
 			throw new IllegalStateException(
@@ -240,6 +242,8 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	 */
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
+		System.out.println("#######> ConfigurationClassPostProcessor postProcessBeanFactory: " + beanFactory.getBeanDefinitionCount());
+
 		int factoryId = System.identityHashCode(beanFactory);
 		if (this.factoriesPostProcessed.contains(factoryId)) {
 			throw new IllegalStateException(
@@ -395,7 +399,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	 * Candidate status is determined by BeanDefinition attribute metadata.
 	 * @see ConfigurationClassEnhancer
 	 *
-	 * 加了@Configuration会得到cjlib代理
+	 * 加了@Configuration会得到cjlib代理, 可以避免手动的多次实例化bean
 	 */
 	public void enhanceConfigurationClasses(ConfigurableListableBeanFactory beanFactory) {
 		// 存放 带有@Configuration注解的类
