@@ -2,6 +2,7 @@ package org.springframework.demo.learn0.context;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.demo.learn0.context.bean.*;
+import org.springframework.demo.learn0.context.bean.impl.DemoDownService;
 import org.springframework.demo.learn0.context.bean.impl.DemoService;
 import org.springframework.demo.learn0.context.bean.impl.DemoUpService;
 import org.springframework.demo.learn0.context.configuration.SpringConfig;
@@ -45,6 +46,8 @@ public class Demo {
 			System.out.println();
 
 			System.out.println(context.getBean(DemoImService.class) + "\n");
+			System.out.println();
+			System.out.println(context.getBean(DemoDownService.class) + "\n");
 			System.out.println();
 		} catch (Exception e) {
 			e.printStackTrace();

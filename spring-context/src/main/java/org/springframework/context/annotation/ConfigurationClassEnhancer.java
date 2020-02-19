@@ -126,7 +126,7 @@ class ConfigurationClassEnhancer {
 		enhancer.setInterfaces(new Class<?>[] {EnhancedConfiguration.class});
 		enhancer.setUseFactory(false);
 		enhancer.setNamingPolicy(SpringNamingPolicy.INSTANCE);
-		// 代理对象生成策略 BeanFactoryAwareGeneratorStrategy
+		// 代理对象生成策略 BeanFactoryAwareGeneratorStrategy, 为代理类添加属性:beanFactory
 		enhancer.setStrategy(new BeanFactoryAwareGeneratorStrategy(classLoader));
 		/**
 		 * 设置回调拦截器
@@ -323,7 +323,7 @@ class ConfigurationClassEnhancer {
 		 * existence of this bean object.
 		 * @throws Throwable as a catch-all for any exception that may be thrown when invoking the
 		 * super implementation of the proxied method i.e., the actual {@code @Bean} method
-		 *
+		 * 增强方法: 控制bean的作用域
 		 * 具体的方法代理, 第一次调用执行被代理方法获得bean, 之后执行直接从beanFactory中获得bean
 		 */
 		@Override
@@ -366,6 +366,10 @@ class ConfigurationClassEnhancer {
 				}
 			}
 
+			/**
+			 * 判断执行的方法和调用的方法是不是同一个方法(判读是new一个对象还是直接get对象)
+			 * * MethodInterceptor 的方法 intercept() 中两个参数 Method method, MethodProxy proxy, 如果被代理方法是同一个方法调用的则method就是被代理方法,如果是不同的方法则method是调用方的method对象
+ 			 */
 			if (isCurrentlyInvokedFactoryMethod(beanMethod)) {
 				// The factory is calling the bean method in order to instantiate and register the bean
 				// (i.e. via a getBean() call) -> invoke the super implementation of the method to actually
@@ -380,10 +384,11 @@ class ConfigurationClassEnhancer {
 									"these container lifecycle issues; see @Bean javadoc for complete details.",
 							beanMethod.getDeclaringClass().getSimpleName(), beanMethod.getName()));
 				}
+				// 调用父类(也就是被代理类)方法
 				return cglibMethodProxy.invokeSuper(enhancedConfigInstance, beanMethodArgs);
 			}
 
-			// 最终调用
+			// 从factory中getBean
 			return resolveBeanReference(beanMethod, beanMethodArgs, beanFactory, beanName);
 		}
 
@@ -412,6 +417,7 @@ class ConfigurationClassEnhancer {
 						}
 					}
 				}
+				// 从factory中getBean
 				Object beanInstance = (useArgs ? beanFactory.getBean(beanName, beanMethodArgs) :
 						beanFactory.getBean(beanName));
 				if (!ClassUtils.isAssignableValue(beanMethod.getReturnType(), beanInstance)) {
@@ -443,6 +449,7 @@ class ConfigurationClassEnhancer {
 				Method currentlyInvoked = SimpleInstantiationStrategy.getCurrentlyInvokedFactoryMethod();
 				if (currentlyInvoked != null) {
 					String outerBeanName = BeanAnnotationHelper.determineBeanNameFor(currentlyInvoked);
+					// bean依赖 注册到factory
 					beanFactory.registerDependentBean(beanName, outerBeanName);
 				}
 				return beanInstance;
