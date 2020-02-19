@@ -277,7 +277,8 @@ class ConfigurationClassEnhancer {
 	 * {@code @Configuration} class instances for the purpose of recording the {@link BeanFactory}.
 	 * @see EnhancedConfiguration
 	 *
-	 * 调用setBeanfactory方法 注入一个beanfactory
+	 * 通过反射调用setBeanFactory方法 注入一个beanfactory
+	 * 如果其原始的类实现了setBeanFactory 则会调用真正的原始类的setBeanFactory 否则只是会给proxy塞入beanFactory
 	 */
 	private static class BeanFactoryAwareMethodInterceptor implements MethodInterceptor, ConditionalCallback {
 
@@ -323,6 +324,9 @@ class ConfigurationClassEnhancer {
 		 * existence of this bean object.
 		 * @throws Throwable as a catch-all for any exception that may be thrown when invoking the
 		 * super implementation of the proxied method i.e., the actual {@code @Bean} method
+		 *
+		 * 检测该类是否有方法包含@Bean，生成bean
+		 *
 		 * 增强方法: 控制bean的作用域
 		 * 具体的方法代理, 第一次调用执行被代理方法获得bean, 之后执行直接从beanFactory中获得bean
 		 */
