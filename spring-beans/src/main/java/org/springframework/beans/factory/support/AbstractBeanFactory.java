@@ -826,7 +826,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		}
 		// Add to end of list
 		this.beanPostProcessors.add(beanPostProcessor);
-		System.out.println("- - beanFactory beanPostProcessors add " + beanPostProcessors.size() + "; present is " + beanPostProcessor);
+		logger.info(" ===> beanFactory添加BeanPostProcessor 当前有BeanPostProcessor个数: " + beanPostProcessors.size() + "; 当前要添加的是: " + beanPostProcessor);
 	}
 
 	@Override

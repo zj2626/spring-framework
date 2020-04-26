@@ -27,6 +27,7 @@ public class Demo {
 			System.out.println("\n>>>>>>>>>>>>>>>>>>>>> AFTER <<<<<<<<<<<<<<<<<<<<");
 			// 手动添加BeanFactoryPostProcessor, 也可以通过注解扫码
 			context.addBeanFactoryPostProcessor(new MyCustomerBeanFactoryPostProcessor());
+
 			System.out.println("\n>>>>>>>>>>>>>>>>>>>>> REFRESH <<<<<<<<<<<<<<<<<<<<");
 			context.refresh();
 

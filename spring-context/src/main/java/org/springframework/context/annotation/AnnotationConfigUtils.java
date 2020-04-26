@@ -21,6 +21,8 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -58,6 +60,7 @@ import org.springframework.util.ClassUtils;
  * @see org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor
  */
 public abstract class AnnotationConfigUtils {
+	private static final Log logger = LogFactory.getLog(AnnotationConfigUtils.class);
 
 	/**
 	 * The bean name of the internally managed Configuration annotation processor.
@@ -155,7 +158,7 @@ public abstract class AnnotationConfigUtils {
 	 */
 	public static Set<BeanDefinitionHolder> registerAnnotationConfigProcessors(
 			BeanDefinitionRegistry registry, @Nullable Object source) {
-		System.out.println("_||_ AnnotationConfigUtils registerAnnotationConfigProcessors " + registry);
+		logger.info("> > > > >注册spring内部的多个BeanDefinition开始 " + registry);
 
 		// 得到 beanFactory(DefaultListableBeanFactory)
 		DefaultListableBeanFactory beanFactory = unwrapDefaultListableBeanFactory(registry);
@@ -225,6 +228,7 @@ public abstract class AnnotationConfigUtils {
 			beanDefs.add(registerPostProcessor(registry, def, EVENT_LISTENER_FACTORY_BEAN_NAME));
 		}
 
+		logger.info("> > > > >注册spring内部的多个BeanDefinition结束 当前有BeanDefinition个数:" + beanDefs.size());
 		return beanDefs;
 	}
 

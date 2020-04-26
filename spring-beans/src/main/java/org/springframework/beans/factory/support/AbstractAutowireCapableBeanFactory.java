@@ -408,7 +408,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	@Override
 	public Object applyBeanPostProcessorsBeforeInitialization(Object existingBean, String beanName)
 			throws BeansException {
-//		System.out.println("- AbstractAutowireCapableBeanFactory initializeBean " + existingBean);
+//		logger.info("- AbstractAutowireCapableBeanFactory initializeBean " + existingBean);
 		Object result = existingBean;
 		for (BeanPostProcessor processor : getBeanPostProcessors()) {
 			Object current = processor.postProcessBeforeInitialization(result, beanName);
@@ -589,7 +589,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// Initialize the bean instance.
 		Object exposedObject = bean;
 		try {
-			System.out.println("- AbstractAutowireCapableBeanFactory initializeBean " + bean);
+			logger.info(" ### 初始化bean实例: " + exposedObject);
 			populateBean(beanName, mbd, instanceWrapper);
 			exposedObject = initializeBean(beanName, exposedObject, mbd);
 		}

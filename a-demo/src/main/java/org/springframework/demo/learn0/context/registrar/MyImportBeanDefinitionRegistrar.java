@@ -23,7 +23,7 @@ public class MyImportBeanDefinitionRegistrar implements ImportBeanDefinitionRegi
 	 */
 	@Override
 	public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
-		System.out.println("MM-IBDR MyImportBeanDefinitionRegistrar registerBeanDefinitions ");
+		System.out.println("执行MyImportBeanDefinitionRegistrar的registerBeanDefinitions方法, 导入MyFactoryBean(demoPDao)");
 
 		// 扫描结果
 		Class<?>[] clazzes = new Class<?>[]{DemoPDao.class};

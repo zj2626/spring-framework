@@ -5,6 +5,6 @@ import org.junit.Test;
 public class Demo {
 	@Test
 	public void defaultDemo() {
-		System.out.println("AAAAAAAAAAAAAAAAAAA");
+		logger.info("AAAAAAAAAAAAAAAAAAA");
 	}
 }

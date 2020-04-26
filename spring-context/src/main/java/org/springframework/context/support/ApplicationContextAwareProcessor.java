@@ -78,7 +78,7 @@ class ApplicationContextAwareProcessor implements BeanPostProcessor {
 	@Override
 	@Nullable
 	public Object postProcessBeforeInitialization(final Object bean, String beanName) throws BeansException {
-//		System.out.println("- ApplicationContextAwareProcessor postProcessBeforeInitialization " + bean);
+//		logger.info("- ApplicationContextAwareProcessor postProcessBeforeInitialization " + bean);
 		AccessControlContext acc = null;
 
 		if (System.getSecurityManager() != null &&

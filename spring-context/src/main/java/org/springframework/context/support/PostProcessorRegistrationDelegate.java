@@ -47,6 +47,7 @@ import org.springframework.lang.Nullable;
  * @since 4.0
  */
 final class PostProcessorRegistrationDelegate {
+	private static final Log logger = LogFactory.getLog(PostProcessorRegistrationDelegate.class);
 
 	private PostProcessorRegistrationDelegate() {
 	}
@@ -59,6 +60,7 @@ final class PostProcessorRegistrationDelegate {
 	 */
 	public static void invokeBeanFactoryPostProcessors(
 			ConfigurableListableBeanFactory beanFactory, List<BeanFactoryPostProcessor> beanFactoryPostProcessors) {
+		logger.info("自定义的BeanFactoryPostProcessor实现类: " + beanFactoryPostProcessors);
 
 		// Invoke BeanDefinitionRegistryPostProcessors first, if any.
 		Set<String> processedBeans = new HashSet<>();
@@ -114,7 +116,7 @@ final class PostProcessorRegistrationDelegate {
 			registryProcessors.addAll(currentRegistryProcessors);
 			// >>>>>>>>>>>>>>>>
 			invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
-			System.out.println("=*=*=< PostProcessorRegistrationDelegate invokeBeanFactoryPostProcessors " + currentRegistryProcessors.size() + " | " + currentRegistryProcessors);
+			logger.info("=*=*=< PostProcessorRegistrationDelegate invokeBeanFactoryPostProcessors " + currentRegistryProcessors.size() + " | " + currentRegistryProcessors);
 			// <<<<<<<<<<<<<<<<
 			currentRegistryProcessors.clear();
 			// *************** ********************************** ************ **********************************
@@ -143,7 +145,7 @@ final class PostProcessorRegistrationDelegate {
 			registryProcessors.addAll(currentRegistryProcessors);
 			// >>>>>>>>>>>>>>>>
 			invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
-			System.out.println("=*=*=< PostProcessorRegistrationDelegate invokeBeanFactoryPostProcessors " + currentRegistryProcessors.size() + " | " + currentRegistryProcessors);
+			logger.info("=*=*=< PostProcessorRegistrationDelegate invokeBeanFactoryPostProcessors " + currentRegistryProcessors.size() + " | " + currentRegistryProcessors);
 			// <<<<<<<<<<<<<<<<
 			currentRegistryProcessors.clear();
 			// *************** ********************************** ************ **********************************
@@ -174,7 +176,7 @@ final class PostProcessorRegistrationDelegate {
 				registryProcessors.addAll(currentRegistryProcessors);
 				// >>>>>>>>>>>>>>>>
 				invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
-				System.out.println("=*=*=< PostProcessorRegistrationDelegate invokeBeanFactoryPostProcessors " + currentRegistryProcessors.size() + " | " + currentRegistryProcessors);
+				logger.info("=*=*=< PostProcessorRegistrationDelegate invokeBeanFactoryPostProcessors " + currentRegistryProcessors.size() + " | " + currentRegistryProcessors);
 				// <<<<<<<<<<<<<<<<
 				currentRegistryProcessors.clear();
 				// *************** ********************************** ************ **********************************
@@ -327,7 +329,7 @@ final class PostProcessorRegistrationDelegate {
 	 */
 	private static void invokeBeanDefinitionRegistryPostProcessors(
 			Collection<? extends BeanDefinitionRegistryPostProcessor> postProcessors, BeanDefinitionRegistry registry) {
-		System.out.println("=*=*=> PostProcessorRegistrationDelegate postProcessBeanDefinitionRegistry " + postProcessors.size() + " | " + postProcessors);
+		logger.info("循环执行BeanDefinitionRegistryPostProcessor的postProcessBeanDefinitionRegistry方法 执行的BeanFactoryPostProcessor有: " + postProcessors);
 
 		for (BeanDefinitionRegistryPostProcessor postProcessor : postProcessors) {
 			// 调用了当前beanFactoryPostProcessor的 postProcessBeanDefinitionRegistry方法, 设置了当前的 beanFactory
@@ -340,7 +342,7 @@ final class PostProcessorRegistrationDelegate {
 	 */
 	private static void invokeBeanFactoryPostProcessors(
 			Collection<? extends BeanFactoryPostProcessor> postProcessors, ConfigurableListableBeanFactory beanFactory) {
-		System.out.println("=*=*=0 PostProcessorRegistrationDelegate postProcessBeanFactory " + postProcessors.size() + " | " + postProcessors);
+		logger.info("=*=*=0 PostProcessorRegistrationDelegate postProcessBeanFactory " + postProcessors.size() + " | " + postProcessors);
 
 		for (BeanFactoryPostProcessor postProcessor : postProcessors) {
 			postProcessor.postProcessBeanFactory(beanFactory);

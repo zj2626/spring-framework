@@ -914,8 +914,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			resetBeanDefinition(beanName);
 		}
 
-		System.out.println("~~~~~~~~~~~~~~ DefaultListableBeanFactory registerBeanDefinition:" + this.getBeanDefinitionCount() + " | BeanPostProcessor: " + this.getBeanPostProcessorCount() + "] " + beanDefinition.getBeanClassName() + " | " + beanDefinition.getFactoryMethodName());
-
+		logger.info(" ***** 注册BeanDefinition 当前有BeanDefinition个数:" + this.getBeanDefinitionCount() + " | 当前有BeanPostProcessor个数: " + this.getBeanPostProcessorCount() + " | 当前要注册的是: " + beanDefinition.getBeanClassName() + " | " + beanDefinition.getFactoryMethodName() + "\n");
 	}
 
 	@Override

@@ -276,6 +276,7 @@ class ConfigurationClassParser {
 	@Nullable
 	protected final SourceClass doProcessConfigurationClass(ConfigurationClass configClass, SourceClass sourceClass)
 			throws IOException {
+		logger.info("\n[ConfigurationClassParser] 处理各种注解: " + sourceClass);
 
 		// 处理内部类
 		if (configClass.getMetadata().isAnnotated(Component.class.getName())) {
@@ -310,10 +311,10 @@ class ConfigurationClassParser {
 			for (AnnotationAttributes componentScan : componentScans) {
 
 				// 扫描普通类 The config class is annotated with @ComponentScan -> perform the scan immediately
-				System.out.println(">>>>>>>>>> SCAN DETAIL before BeanDefinition: " + this.registry.getBeanDefinitionCount() + " new: " +  componentScan);
+				logger.info("\n\n[ConfigurationClassParser] >>>>>> 扫描包路径并注册BeanDefinition before 当前有BeanDefinition个数: " + this.registry.getBeanDefinitionCount());
 				Set<BeanDefinitionHolder> scannedBeanDefinitions =
 						this.componentScanParser.parse(componentScan, sourceClass.getMetadata().getClassName());
-				System.out.println(">>>>>>>>>> SCAN DETAIL after BeanDefinition:" + this.registry.getBeanDefinitionCount() + " new: " + scannedBeanDefinitions.size());
+				logger.info("[ConfigurationClassParser] >>>>>> 扫描包路径并注册BeanDefinition after 当前有BeanDefinition个数:" + this.registry.getBeanDefinitionCount() + " 扫描到的类个数: " + scannedBeanDefinitions.size() + "\n\n");
 
 				// Check the set of scanned definitions for any further config classes and parse recursively if needed
 				for (BeanDefinitionHolder holder : scannedBeanDefinitions) {
@@ -336,7 +337,7 @@ class ConfigurationClassParser {
 		 * 3. ImportBeanDefinitionRegistrar
 		 */
 		// Process any @Import annotations
-		System.out.println("@Import -- " + sourceClass + "\n\t" + getImports(sourceClass));
+		logger.info("		Import	处理@Import注解 开始" + sourceClass);
 		processImports(configClass, sourceClass, getImports(sourceClass), true);
 
 		// Process any @ImportResource annotations
@@ -604,6 +605,8 @@ class ConfigurationClassParser {
 			this.importStack.push(configClass);
 			try {
 				for (SourceClass candidate : importCandidates) {
+					logger.info("		Import			循环处理@Import导入的类" + candidate);
+
 					// ImportSelector
 					if (candidate.isAssignable(ImportSelector.class)) {
 						// Candidate class is an ImportSelector -> delegate to it to determine imports

@@ -28,10 +28,10 @@ package org.aopalliance.intercept;
  * <pre class=code>
  * class TracingInterceptor implements MethodInterceptor {
  *   Object invoke(MethodInvocation i) throws Throwable {
- *     System.out.println("method "+i.getMethod()+" is called on "+
+ *     logger.info("method "+i.getMethod()+" is called on "+
  *                        i.getThis()+" with args "+i.getArguments());
  *     Object ret=i.proceed();
- *     System.out.println("method "+i.getMethod()+" returns "+ret);
+ *     logger.info("method "+i.getMethod()+" returns "+ret);
  *     return ret;
  *   }
  * }

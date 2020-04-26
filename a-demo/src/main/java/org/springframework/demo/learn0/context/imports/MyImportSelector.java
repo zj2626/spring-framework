@@ -8,7 +8,7 @@ public class MyImportSelector implements ImportSelector {
 
 	@Override
 	public String[] selectImports(AnnotationMetadata importingClassMetadata) {
-		System.out.println("MM-IS MyImportSelector selectImports ");
+		System.out.println("执行MyImportSelector的selectImports方法 导入需要的bean ");
 
 		if (importingClassMetadata.isAnnotated(EnableIm.class.getName())) {
 			return new String[]{DemoImServiceImpl.class.getName(), MyAopBeanPostProcessor.class.getName()};
