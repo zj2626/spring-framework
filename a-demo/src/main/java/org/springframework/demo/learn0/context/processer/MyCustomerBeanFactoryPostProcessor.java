@@ -8,7 +8,7 @@ public class MyCustomerBeanFactoryPostProcessor implements BeanFactoryPostProces
 
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-		System.out.println("MM-CBFP MyCustomerBeanFactoryPostProcessor postProcessBeanFactory ");
+		System.out.println("执行MyCustomerBeanFactoryPostProcessor的postProcessBeanFactory方法");
 		// 插手 beanfactory实例化bean过程, 修改某个注入的bean的信息
 //		BeanDefinition definition = beanFactory.getBeanDefinition("demoService");
 //		definition.setScope("prototype");

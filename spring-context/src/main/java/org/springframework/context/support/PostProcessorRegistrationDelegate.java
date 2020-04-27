@@ -16,12 +16,7 @@
 
 package org.springframework.context.support;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -116,7 +111,7 @@ final class PostProcessorRegistrationDelegate {
 			registryProcessors.addAll(currentRegistryProcessors);
 			// >>>>>>>>>>>>>>>>
 			invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
-			logger.info("=*=*=< PostProcessorRegistrationDelegate invokeBeanFactoryPostProcessors " + currentRegistryProcessors.size() + " | " + currentRegistryProcessors);
+			logger.info(">invokeBeanDefinitionRegistryPostProcessors<1 执行ConfigurationClassPostProcessor的postProcessBeanDefinitionRegistry方法完毕 " + currentRegistryProcessors);
 			// <<<<<<<<<<<<<<<<
 			currentRegistryProcessors.clear();
 			// *************** ********************************** ************ **********************************
@@ -145,7 +140,7 @@ final class PostProcessorRegistrationDelegate {
 			registryProcessors.addAll(currentRegistryProcessors);
 			// >>>>>>>>>>>>>>>>
 			invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
-			logger.info("=*=*=< PostProcessorRegistrationDelegate invokeBeanFactoryPostProcessors " + currentRegistryProcessors.size() + " | " + currentRegistryProcessors);
+			logger.info(">invokeBeanDefinitionRegistryPostProcessors<2 " + currentRegistryProcessors.size() + " | " + currentRegistryProcessors);
 			// <<<<<<<<<<<<<<<<
 			currentRegistryProcessors.clear();
 			// *************** ********************************** ************ **********************************
@@ -176,7 +171,7 @@ final class PostProcessorRegistrationDelegate {
 				registryProcessors.addAll(currentRegistryProcessors);
 				// >>>>>>>>>>>>>>>>
 				invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
-				logger.info("=*=*=< PostProcessorRegistrationDelegate invokeBeanFactoryPostProcessors " + currentRegistryProcessors.size() + " | " + currentRegistryProcessors);
+				logger.info(">invokeBeanDefinitionRegistryPostProcessors<3 " + currentRegistryProcessors.size() + " | " + currentRegistryProcessors);
 				// <<<<<<<<<<<<<<<<
 				currentRegistryProcessors.clear();
 				// *************** ********************************** ************ **********************************
@@ -185,6 +180,7 @@ final class PostProcessorRegistrationDelegate {
 
 			// 执行 postProcessBeanFactory 方法
 			// Now, invoke the postProcessBeanFactory callback of all processors handled so far.
+			logger.info("\n");
 			invokeBeanFactoryPostProcessors(registryProcessors, beanFactory);
 			invokeBeanFactoryPostProcessors(regularPostProcessors, beanFactory);
 		}
@@ -241,12 +237,15 @@ final class PostProcessorRegistrationDelegate {
 		// Clear cached merged bean definitions since the post-processors might have
 		// modified the original metadata, e.g. replacing placeholders in values...
 		beanFactory.clearMetadataCache();
+
+		logger.info("=================BeanFactoryPostProcessor调用完成========================\n");
 	}
 
 	public static void registerBeanPostProcessors(
 			ConfigurableListableBeanFactory beanFactory, AbstractApplicationContext applicationContext) {
 
 		String[] postProcessorNames = beanFactory.getBeanNamesForType(BeanPostProcessor.class, true, false);
+		logger.info("当前工厂中已有的BeanPostProcessor " + postProcessorNames.length + " | " + Arrays.toString(postProcessorNames));
 
 		// Register BeanPostProcessorChecker that logs an info message when
 		// a bean is created during BeanPostProcessor instantiation, i.e. when
@@ -329,9 +328,8 @@ final class PostProcessorRegistrationDelegate {
 	 */
 	private static void invokeBeanDefinitionRegistryPostProcessors(
 			Collection<? extends BeanDefinitionRegistryPostProcessor> postProcessors, BeanDefinitionRegistry registry) {
-		logger.info("循环执行BeanDefinitionRegistryPostProcessor的postProcessBeanDefinitionRegistry方法 执行的BeanFactoryPostProcessor有: " + postProcessors);
-
 		for (BeanDefinitionRegistryPostProcessor postProcessor : postProcessors) {
+			logger.info("执行BeanDefinitionRegistryPostProcessor的 postProcessBeanDefinitionRegistry方法 执行的BeanFactoryPostProcessor: " + postProcessor);
 			// 调用了当前beanFactoryPostProcessor的 postProcessBeanDefinitionRegistry方法, 设置了当前的 beanFactory
 			postProcessor.postProcessBeanDefinitionRegistry(registry);
 		}
@@ -342,9 +340,8 @@ final class PostProcessorRegistrationDelegate {
 	 */
 	private static void invokeBeanFactoryPostProcessors(
 			Collection<? extends BeanFactoryPostProcessor> postProcessors, ConfigurableListableBeanFactory beanFactory) {
-		logger.info("=*=*=0 PostProcessorRegistrationDelegate postProcessBeanFactory " + postProcessors.size() + " | " + postProcessors);
-
 		for (BeanFactoryPostProcessor postProcessor : postProcessors) {
+			logger.info("执行BeanFactoryPostProcessor的 postProcessBeanFactory方法 执行的BeanFactoryPostProcessor: " + postProcessor);
 			postProcessor.postProcessBeanFactory(beanFactory);
 		}
 	}

@@ -257,6 +257,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		}
 
 		// 给配置类产生cglib代理 (@Configuration注解的类)
+		logger.info("给配置类产生cglib代理 (@Configuration注解的类), " + beanFactory);
 		enhanceConfigurationClasses(beanFactory);
 		beanFactory.addBeanPostProcessor(new ImportAwareBeanPostProcessor(beanFactory));
 	}
@@ -354,9 +355,9 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			alreadyParsed.addAll(configClasses);
 
 			logger.info("\n");
-			logger.info("[ConfigurationClassPostProcessor]#######################################################################################");
-			logger.info("[ConfigurationClassPostProcessor]############################ ALL RegisterBeanDefinition DONE ##########################");
-			logger.info("[ConfigurationClassPostProcessor]#######################################################################################");
+			logger.info("[ConfigurationClassPostProcessor]####################		#################################################		##################");
+			logger.info("[ConfigurationClassPostProcessor]####################		######## ALL RegisterBeanDefinition DONE ########		##################");
+			logger.info("[ConfigurationClassPostProcessor]####################		#################################################		##################");
 			logger.info("\n");
 
 			candidates.clear();

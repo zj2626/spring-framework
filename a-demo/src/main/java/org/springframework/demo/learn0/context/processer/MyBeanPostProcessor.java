@@ -14,14 +14,14 @@ public class MyBeanPostProcessor implements BeanPostProcessor, PriorityOrdered {
 	// bean初始化之前
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-		System.out.println("MM-BP MyBeanPostProcessor    postProcessBeforeInitialization " + bean);
+		System.out.println("执行MyBeanPostProcessor的postProcessBeforeInitialization方法");
 		return bean;
 	}
 
 	// bean初始化之后
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-		System.out.println("MM-BP MyBeanPostProcessor    postProcessAfterInitialization " + bean);
+		System.out.println("执行MyBeanPostProcessor的postProcessAfterInitialization方法");
 		return bean;
 	}
 

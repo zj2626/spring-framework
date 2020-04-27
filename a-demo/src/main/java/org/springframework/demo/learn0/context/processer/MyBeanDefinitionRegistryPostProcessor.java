@@ -11,12 +11,12 @@ public class MyBeanDefinitionRegistryPostProcessor implements BeanDefinitionRegi
 
 	@Override
 	public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-		System.out.println("MM-BDRP MyBeanDefinitionRegistryPostProcessor postProcessBeanDefinitionRegistry ");
+		System.out.println("执行MyBeanDefinitionRegistryPostProcessor的postProcessBeanDefinitionRegistry方法");
 	}
 
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-		System.out.println("MM-BDRP MyBeanDefinitionRegistryPostProcessor postProcessBeanFactory ");
+		System.out.println("执行MyBeanDefinitionRegistryPostProcessor的postProcessBeanFactory方法");
 		// 插手 beanfactory实例化bean过程, 修改某个注入的bean的信息
 		//		BeanDefinition definition = beanFactory.getBeanDefinition("demoService");
 		//		definition.setScope("prototype");
