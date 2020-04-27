@@ -551,6 +551,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				initApplicationEventMulticaster();
 
 				// Initialize other special beans in specific context subclasses.
+				// 没有实现
 				logger.info("> refresh___________________________ onRefresh [BeanDefinition:" + beanFactory.getBeanDefinitionCount() + " | BeanPostProcessor: " + beanFactory.getBeanPostProcessorCount() + "]");
 				onRefresh();
 

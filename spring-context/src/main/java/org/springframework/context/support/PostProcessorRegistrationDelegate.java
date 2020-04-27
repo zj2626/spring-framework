@@ -246,6 +246,7 @@ final class PostProcessorRegistrationDelegate {
 
 		String[] postProcessorNames = beanFactory.getBeanNamesForType(BeanPostProcessor.class, true, false);
 		logger.info("当前工厂中已有的BeanPostProcessor " + postProcessorNames.length + " | " + Arrays.toString(postProcessorNames));
+		logger.info("当前工厂中已有的BeanPostProcessor " + beanFactory.getBeanPostProcessorCount() + " | " + ((DefaultListableBeanFactory)beanFactory).getBeanPostProcessors());
 
 		// Register BeanPostProcessorChecker that logs an info message when
 		// a bean is created during BeanPostProcessor instantiation, i.e. when
@@ -278,6 +279,7 @@ final class PostProcessorRegistrationDelegate {
 		// First, register the BeanPostProcessors that implement PriorityOrdered.
 		sortPostProcessors(priorityOrderedPostProcessors, beanFactory);
 		registerBeanPostProcessors(beanFactory, priorityOrderedPostProcessors);
+		logger.info(">registerBeanPostProcessors<1 注册BeanPostProcessors: " + priorityOrderedPostProcessors.size() + " | " + priorityOrderedPostProcessors);
 
 		// Next, register the BeanPostProcessors that implement Ordered.
 		List<BeanPostProcessor> orderedPostProcessors = new ArrayList<>();
@@ -290,6 +292,7 @@ final class PostProcessorRegistrationDelegate {
 		}
 		sortPostProcessors(orderedPostProcessors, beanFactory);
 		registerBeanPostProcessors(beanFactory, orderedPostProcessors);
+		logger.info(">registerBeanPostProcessors<2 注册BeanPostProcessors: " + orderedPostProcessors.size() + " | " + orderedPostProcessors);
 
 		// Now, register all regular BeanPostProcessors.
 		List<BeanPostProcessor> nonOrderedPostProcessors = new ArrayList<>();
@@ -301,14 +304,18 @@ final class PostProcessorRegistrationDelegate {
 			}
 		}
 		registerBeanPostProcessors(beanFactory, nonOrderedPostProcessors);
+		logger.info(">registerBeanPostProcessors<3 注册BeanPostProcessors: " + nonOrderedPostProcessors.size() + " | " + nonOrderedPostProcessors);
 
 		// Finally, re-register all internal BeanPostProcessors.
 		sortPostProcessors(internalPostProcessors, beanFactory);
 		registerBeanPostProcessors(beanFactory, internalPostProcessors);
+		logger.info(">registerBeanPostProcessors<4 注册BeanPostProcessors: " + internalPostProcessors.size() + " | " + internalPostProcessors);
 
 		// Re-register post-processor for detecting inner beans as ApplicationListeners,
 		// moving it to the end of the processor chain (for picking up proxies etc).
 		beanFactory.addBeanPostProcessor(new ApplicationListenerDetector(applicationContext));
+
+		logger.info("=================BeanPostProcessor调用完成========================\n");
 	}
 
 	private static void sortPostProcessors(List<?> postProcessors, ConfigurableListableBeanFactory beanFactory) {
