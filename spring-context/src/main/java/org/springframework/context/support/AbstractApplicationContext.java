@@ -539,6 +539,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
+				// 注册BeanPostProcessors
 				logger.info("> refresh___________________________ registerBeanPostProcessors [BeanDefinition:" + beanFactory.getBeanDefinitionCount() + " | BeanPostProcessor: " + beanFactory.getBeanPostProcessorCount() + "]");
 				registerBeanPostProcessors(beanFactory);
 
@@ -560,11 +561,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				registerListeners();
 
 				// Instantiate all remaining (non-lazy-init) singletons.
-				logger.info("> refresh___________________________ finishBeanFactoryInitialization [BeanDefinition:" + beanFactory.getBeanDefinitionCount() + " | BeanPostProcessor: " + beanFactory.getBeanPostProcessorCount() + "]");
+				// 实例化所有的非lazy的单例bean
+				logger.info("\n\n> refresh___________________________ finishBeanFactoryInitialization [BeanDefinition:" + beanFactory.getBeanDefinitionCount() + " | BeanPostProcessor: " + beanFactory.getBeanPostProcessorCount() + "]");
 				finishBeanFactoryInitialization(beanFactory);
 
 				// Last step: publish corresponding event.
-				logger.info("> refresh___________________________ finishRefresh [BeanDefinition:" + beanFactory.getBeanDefinitionCount() + " | BeanPostProcessor: " + beanFactory.getBeanPostProcessorCount() + "]");
+				logger.info("\n\n> refresh___________________________ finishRefresh [BeanDefinition:" + beanFactory.getBeanDefinitionCount() + " | BeanPostProcessor: " + beanFactory.getBeanPostProcessorCount() + "]");
 				finishRefresh();
 			}
 
