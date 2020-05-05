@@ -347,7 +347,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		// 得到bean的切面, 创建代理对象(必须是有切面的才会创建)
 		Object[] specificInterceptors = getAdvicesAndAdvisorsForBean(bean.getClass(), beanName, null);
 		if (specificInterceptors != DO_NOT_PROXY) {
-			System.out.println("[AbstractAutoProxyCreator wrapIfNecessary           ] ######## ---> " + beanName + " | " + bean);
+			System.out.println("[AbstractAutoProxyCreator wrapIfNecessary           ] ########## ---> " + beanName + " | " + bean);
 			this.advisedBeans.put(cacheKey, Boolean.TRUE);
 			Object proxy = createProxy(
 					bean.getClass(), beanName, specificInterceptors, new SingletonTargetSource(bean));
@@ -471,7 +471,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 			proxyFactory.setPreFiltered(true);
 		}
 
-	    System.out.println("[AbstractAutoProxyCreator createProxy               ] ######### ---> " + beanName);
+	    System.out.println("[AbstractAutoProxyCreator createProxy               ] ########### ---> " + beanName);
 		return proxyFactory.getProxy(getProxyClassLoader());
 	}
 

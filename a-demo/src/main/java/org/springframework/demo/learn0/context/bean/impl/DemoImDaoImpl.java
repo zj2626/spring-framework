@@ -18,10 +18,8 @@ public class DemoImDaoImpl implements DemoImDao {
 
 	@Override
 	public String toString() {
-		final StringBuilder sb = new StringBuilder("$$_" + this.getClass().getSimpleName() + "-" + super.hashCode() + ": {");
-		sb.append("\"id\":")
-				.append(id);
-		sb.append('}');
-		return sb.toString();
+		return "[TO_STRING] DemoImDaoImpl{" +
+				"id=" + id +
+				'}';
 	}
 }

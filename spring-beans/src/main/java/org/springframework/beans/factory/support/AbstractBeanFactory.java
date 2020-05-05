@@ -201,7 +201,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 		System.out.println("[AbstractBeanFactory doGetBean                      ] ## ---> " + beanName + " (" + name + ")");
 		// Eagerly check singleton cache for manually registered singletons.
-		// 检查单例缓存是否有手动注册的单例, 基本为null
+		// 检查单例缓存是否有手动注册的单例, 初始化的时候返回null
 		Object sharedInstance = getSingleton(beanName);
 		if (sharedInstance != null && args == null) {
 			if (logger.isTraceEnabled()) {
@@ -219,6 +219,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		else {
 			// Fail if we're already creating this bean instance:
 			// We're assumably within a circular reference.
+			// 是否是正在创建的Bean (包含在 prototypesCurrentlyInCreation 中)
 			if (isPrototypeCurrentlyInCreation(beanName)) {
 				throw new BeanCurrentlyInCreationException(beanName);
 			}
@@ -246,7 +247,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				}
 			}
 
-			// 检查并标记 bean已经被创建
+			// 检查并标记 bean已经被创建 (包含在 alreadyCreated 中)
 			if (!typeCheckOnly) {
 				markBeanAsCreated(beanName);
 			}
@@ -279,6 +280,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				// 单例: 创建bean对象
 				// Create bean instance.
 				if (mbd.isSingleton()) {
+					// 存在则返回, 不存在则创建bean实例
 					sharedInstance = getSingleton(beanName, () -> {
 						try {
 							return createBean(beanName, mbd, args);

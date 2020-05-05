@@ -34,12 +34,9 @@ public class DemoCPService {
 
 	@Override
 	public String toString() {
-		final StringBuilder sb = new StringBuilder("$$_" + this.getClass().getSimpleName() + "-" + super.hashCode() + ": {");
-		sb.append("\"dao\":")
-				.append(dao);
-		sb.append(",\"pDao\":")
-				.append(pDao);
-		sb.append('}');
-		return sb.toString();
+		return "[TO_STRING] DemoCPService{" +
+				"dao=" + dao +
+				", pDao=" + pDao +
+				'}';
 	}
 }

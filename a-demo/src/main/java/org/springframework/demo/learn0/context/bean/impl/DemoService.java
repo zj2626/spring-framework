@@ -1,5 +1,6 @@
 package org.springframework.demo.learn0.context.bean.impl;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.demo.learn0.context.bean.DemoDao;
 import org.springframework.demo.learn0.context.bean.DemoPDao;
@@ -8,7 +9,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 
 @Service
-public class DemoService {
+public class DemoService implements InitializingBean {
+
+	private Integer id;
 
 	@Autowired
 	private DemoDao dao;
@@ -21,8 +24,15 @@ public class DemoService {
 	}
 
 	@PostConstruct
-	public void init(){
+	public void postConstructMethod(){
+		id = 4;
 		System.out.println("DemoService PostConstruct " + dao);
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		id = 3;
+		System.out.println("DemoService afterPropertiesSet " + dao);
 	}
 
 	public void doQuery() {
@@ -33,12 +43,10 @@ public class DemoService {
 
 	@Override
 	public String toString() {
-		final StringBuilder sb = new StringBuilder("$$_" + this.getClass().getSimpleName() + "-" + super.hashCode() + ": {");
-		sb.append("\"dao\":")
-				.append(dao);
-		sb.append(",\"pDao\":")
-				.append(pDao);
-		sb.append('}');
-		return sb.toString();
+		return "[TO_STRING] DemoService{" +
+				"dao=" + dao +
+				", pDao=" + pDao +
+				'}';
 	}
+
 }

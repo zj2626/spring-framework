@@ -20,10 +20,8 @@ public class DemoUPServiceImpl implements DemoUPService {
 
 	@Override
 	public String toString() {
-		final StringBuilder sb = new StringBuilder("$$_" + this.getClass().getSimpleName() + "-" + super.hashCode() + ": {");
-		sb.append("\"dao\":")
-				.append(dao);
-		sb.append('}');
-		return sb.toString();
+		return "[TO_STRING] DemoUPServiceImpl{" +
+				"dao=" + dao +
+				'}';
 	}
 }

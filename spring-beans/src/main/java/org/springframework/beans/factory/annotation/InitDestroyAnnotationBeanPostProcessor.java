@@ -304,6 +304,7 @@ public class InitDestroyAnnotationBeanPostProcessor
 					if (logger.isTraceEnabled()) {
 						logger.trace("Invoking init method on bean '" + beanName + "': " + element.getMethod());
 					}
+					System.out.println("[InitDestroyAnnotationBeanPostProcessor invokeInitMethods ] ##### ---> " + beanName + " | " + element.getMethod().getName());
 					element.invoke(target);
 				}
 			}

@@ -15,8 +15,9 @@ public class DemoDaoImpl implements DemoDao {
 	}
 
 	@PostConstruct
-	public void init(){
-		System.out.println("DemoDao PostConstruct");
+	public void initPostConstruct(){
+		id = 2;
+		System.out.println("DemoDao PostConstruct" + id);
 	}
 
     @Override
@@ -26,10 +27,8 @@ public class DemoDaoImpl implements DemoDao {
 
 	@Override
 	public String toString() {
-		final StringBuilder sb = new StringBuilder("$$_" + this.getClass().getSimpleName() + "-" + super.hashCode() + ": {");
-		sb.append("\"id\":")
-				.append(id);
-		sb.append('}');
-		return sb.toString();
+		return "[TO_STRING] DemoDaoImpl{" +
+				"id=" + id +
+				'}';
 	}
 }

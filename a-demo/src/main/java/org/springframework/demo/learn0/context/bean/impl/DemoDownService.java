@@ -8,6 +8,6 @@ public class DemoDownService {
 
 	@Override
 	public String toString() {
-		return this.getClass().getSimpleName() + "-" + super.hashCode();
+		return "[TO_STRING] DemoDownService{}";
 	}
 }
