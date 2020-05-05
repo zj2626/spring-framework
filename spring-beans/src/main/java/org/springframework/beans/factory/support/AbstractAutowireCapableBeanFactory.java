@@ -446,6 +446,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		// Prepare method overrides.
+		// lookup-method和replace-method统称为 methodOverrides, 对其进行处理
 		try {
 			mbdToUse.prepareMethodOverrides();
 		}
@@ -456,7 +457,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		try {
 			// Give BeanPostProcessors a chance to return a proxy instead of the target bean instance.
-			// 给BeanPostProcessors一个返回代理而不是目标bean实例的机会
+			// 给BeanPostProcessors一个返回代理而不是目标bean实例的机会, 即通过后置处理器直接创建自己的bean的扩展点:通过实现 InstantiationAwareBeanPostProcessor 接口
 			Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
 			if (bean != null) {
 				return bean;
