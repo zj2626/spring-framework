@@ -248,10 +248,10 @@ class TraceAspect {
 
 	public int afterTakesInt;
 
-	@Before("execution(String *.*(..))")
-	public void traceWithoutJoinPoint() {
-		++beforeStringReturn;
-	}
+//	@Before("execution(String *.*(..))")
+//	public void traceWithoutJoinPoint() {
+//		++beforeStringReturn;
+//	}
 
 	@AfterReturning("execution(void *.*(int))")
 	public void traceWithoutJoinPoint2() {

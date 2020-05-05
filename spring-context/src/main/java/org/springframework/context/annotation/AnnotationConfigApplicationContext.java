@@ -64,10 +64,10 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 */
 	public AnnotationConfigApplicationContext() {
 		super();
-		logger.info("初始化AnnotatedBeanDefinitionReader开始 [BeanDefinition:" + this.getBeanFactory().getBeanDefinitionCount() + " | BeanPostProcessor: " + this.getBeanFactory().getBeanPostProcessorCount() + "]");
+		System.out.println("初始化AnnotatedBeanDefinitionReader开始 [BeanDefinition:" + this.getBeanFactory().getBeanDefinitionCount() + " | BeanPostProcessor: " + this.getBeanFactory().getBeanPostProcessorCount() + "]");
 		// 该reader只能 读取注解修饰的类转化为 BeanDefinition
 		this.reader = new AnnotatedBeanDefinitionReader(this);
-		logger.info("初始化AnnotatedBeanDefinitionReader完成 beanFactory [BeanDefinition:" + this.getBeanFactory().getBeanDefinitionCount() + " | BeanPostProcessor: " + this.getBeanFactory().getBeanPostProcessorCount() + "]");
+		System.out.println("初始化AnnotatedBeanDefinitionReader完成 beanFactory [BeanDefinition:" + this.getBeanFactory().getBeanDefinitionCount() + " | BeanPostProcessor: " + this.getBeanFactory().getBeanPostProcessorCount() + "]");
 
 		// 扫描 类 转换成 BeanDefinition,  这里的scanner不是用来初始化时候进行扫描的,而是提供接口给用户来直接调用扫描的
 		this.scanner = new ClassPathBeanDefinitionScanner(this);

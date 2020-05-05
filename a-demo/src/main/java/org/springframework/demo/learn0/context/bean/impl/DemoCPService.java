@@ -7,28 +7,29 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 
-@Service
-public class DemoService {
+@Service("DemoCPService")
+public class DemoCPService {
 
-	@Autowired
 	private DemoDao dao;
 
-	@Autowired
 	private DemoPDao pDao;
 
-	public DemoService() {
-		System.out.println("DemoService Constructor " + dao + " | " + pDao);
+	public DemoCPService(DemoDao dao) {
+		System.out.println("DemoConstructService Constructor " + dao + " | " + pDao);
+		this.dao = dao;
 	}
 
-	@PostConstruct
-	public void init(){
-		System.out.println("DemoService PostConstruct " + dao);
+	@Autowired
+	public DemoCPService(DemoDao dao, DemoPDao pDao) {
+		System.out.println("DemoConstructService Constructor " + dao + " | " + pDao);
+		this.dao = dao;
+		this.pDao = pDao;
 	}
 
 	public void doQuery() {
 		System.out.println("do query !");
 		dao.doQuery();
-		pDao.doQuery("dd demo");
+		pDao.doQuery("AAA");
 	}
 
 	@Override

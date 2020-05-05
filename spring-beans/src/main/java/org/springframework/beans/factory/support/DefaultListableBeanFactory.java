@@ -781,6 +781,10 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		return (this.configurationFrozen || super.isBeanEligibleForMetadataCaching(beanName));
 	}
 
+	/**
+	 * 预实例化bean
+	 * @throws BeansException
+	 */
 	@Override
 	public void preInstantiateSingletons() throws BeansException {
 		if (logger.isTraceEnabled()) {
@@ -793,8 +797,12 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 		// Trigger initialization of all non-lazy singleton beans...
 		for (String beanName : beanNames) {
+			System.out.println("\n[DefaultListableBeanFactory preInstantiateSingletons] # ---> " + beanName);
+			// 合并父类BeanDefinition
 			RootBeanDefinition bd = getMergedLocalBeanDefinition(beanName);
+			// 非抽象,单例,非懒加载的bean才进行实例化
 			if (!bd.isAbstract() && bd.isSingleton() && !bd.isLazyInit()) {
+				// 判断是不是FactoryBean
 				if (isFactoryBean(beanName)) {
 					Object bean = getBean(FACTORY_BEAN_PREFIX + beanName);
 					if (bean instanceof FactoryBean) {
@@ -815,6 +823,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 					}
 				}
 				else {
+					// 实例化
 					getBean(beanName);
 				}
 			}
@@ -914,7 +923,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			resetBeanDefinition(beanName);
 		}
 
-		logger.info(" ***** 注册BeanDefinition 当前有BeanDefinition个数:" + this.getBeanDefinitionCount() + " | 当前有BeanPostProcessor个数: " + this.getBeanPostProcessorCount() + " | 当前要注册的是: " + beanDefinition.getBeanClassName() + " | " + beanDefinition.getFactoryMethodName() + "\n");
+		System.out.println("***** 注册BeanDefinition 当前有BeanDefinition个数:" + this.getBeanDefinitionCount() + " | 当前有BeanPostProcessor个数: " + this.getBeanPostProcessorCount() + " | 当前要注册的是: " + beanDefinition.getBeanClassName() + " | " + beanDefinition.getFactoryMethodName() + "\n");
 	}
 
 	@Override

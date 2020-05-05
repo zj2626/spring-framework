@@ -219,7 +219,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	 */
 	@Override
 	public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) {
-		logger.info("[ConfigurationClassPostProcessor] postProcessBeanDefinitionRegistry 已有BeanDefinition个数: " + registry.getBeanDefinitionCount());
+		System.out.println("[ConfigurationClassPostProcessor] postProcessBeanDefinitionRegistry 已有BeanDefinition个数: " + registry.getBeanDefinitionCount());
 
 		int registryId = System.identityHashCode(registry);
 		if (this.registriesPostProcessed.contains(registryId)) {
@@ -242,7 +242,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	 */
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
-		logger.info("[ConfigurationClassPostProcessor] postProcessBeanFactory: " + beanFactory.getBeanDefinitionCount());
+		System.out.println("[ConfigurationClassPostProcessor] postProcessBeanFactory: " + beanFactory.getBeanDefinitionCount());
 
 		int factoryId = System.identityHashCode(beanFactory);
 		if (this.factoriesPostProcessed.contains(factoryId)) {
@@ -257,7 +257,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		}
 
 		// 给配置类产生cglib代理 (@Configuration注解的类)
-		logger.info("给配置类产生cglib代理 (@Configuration注解的类), " + beanFactory);
+		System.out.println("给配置类产生cglib代理 (@Configuration注解的类), " + beanFactory);
 		enhanceConfigurationClasses(beanFactory);
 		beanFactory.addBeanPostProcessor(new ImportAwareBeanPostProcessor(beanFactory));
 	}
@@ -297,7 +297,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		if (configCandidates.isEmpty()) {
 			return;
 		}
-		logger.info("得到容器中的@Configuration注解类个数: " + configCandidates.size());
+		System.out.println("得到容器中的@Configuration注解类个数: " + configCandidates.size());
 
 		// 排序: Sort by previously determined @Order value, if applicable
 		configCandidates.sort((bd1, bd2) -> {
@@ -334,9 +334,9 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		Set<ConfigurationClass> alreadyParsed = new HashSet<>(configCandidates.size());
 		do {
 			// 扫描包
-			logger.info("\n[ConfigurationClassPostProcessor] 扫描并注册项目中的BeanDefinition before 当前有BeanDefinition个数: " + registry.getBeanDefinitionCount());
+			System.out.println("\n[ConfigurationClassPostProcessor] 扫描并注册项目中的BeanDefinition before 当前有BeanDefinition个数: " + registry.getBeanDefinitionCount());
 			parser.parse(candidates);
-			logger.info("[ConfigurationClassPostProcessor] 扫描并注册项目中的BeanDefinition after 当前有BeanDefinition个数: " + registry.getBeanDefinitionCount() + "\n");
+			System.out.println("[ConfigurationClassPostProcessor] 扫描并注册项目中的BeanDefinition after 当前有BeanDefinition个数: " + registry.getBeanDefinitionCount() + "\n");
 			parser.validate();
 
 			// 得到所有的注册和未注册的类 他们都是在parse中扫描或者Import得到的
@@ -350,15 +350,15 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 						this.importBeanNameGenerator, parser.getImportRegistry());
 			}
 			// 把未注册的bean进行注册
-			logger.info("[ConfigurationClassPostProcessor] 把未注册的bean进行注册: " + configClasses.size());
+			System.out.println("[ConfigurationClassPostProcessor] 把未注册的bean进行注册: " + configClasses.size());
 			this.reader.loadBeanDefinitions(configClasses);
 			alreadyParsed.addAll(configClasses);
 
-			logger.info("\n");
-			logger.info("[ConfigurationClassPostProcessor]####################		#################################################		##################");
-			logger.info("[ConfigurationClassPostProcessor]####################		######## ALL RegisterBeanDefinition DONE ########		##################");
-			logger.info("[ConfigurationClassPostProcessor]####################		#################################################		##################");
-			logger.info("\n");
+			System.out.println("\n");
+			System.out.println("[ConfigurationClassPostProcessor]####################		#################################################		##################");
+			System.out.println("[ConfigurationClassPostProcessor]####################		######## ALL RegisterBeanDefinition DONE ########		##################");
+			System.out.println("[ConfigurationClassPostProcessor]####################		#################################################		##################");
+			System.out.println("\n");
 
 			candidates.clear();
 

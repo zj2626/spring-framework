@@ -8,11 +8,20 @@ public class DemoImDaoImpl implements DemoImDao {
 	private Integer id = 1;
 
 	public DemoImDaoImpl() {
-		System.out.println("\nDemoImDao Constructor");
+		System.out.println("DemoImDao Constructor " + id);
 	}
 
 	@Override
 	public void doQuery() {
 		System.out.println("query sql " + id);
+	}
+
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder("$$_" + this.getClass().getSimpleName() + "-" + super.hashCode() + ": {");
+		sb.append("\"id\":")
+				.append(id);
+		sb.append('}');
+		return sb.toString();
 	}
 }

@@ -4,7 +4,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.demo.learn0.context.bean.*;
 import org.springframework.demo.learn0.context.bean.impl.DemoDownService;
 import org.springframework.demo.learn0.context.bean.impl.DemoService;
-import org.springframework.demo.learn0.context.bean.impl.DemoUpService;
+import org.springframework.demo.learn0.context.bean.DemoUPService;
 import org.springframework.demo.learn0.context.configuration.SpringConfig;
 import org.springframework.demo.learn0.context.processer.MyCustomerBeanFactoryPostProcessor;
 
@@ -38,16 +38,24 @@ public class Demo {
 			System.out.println(context.getBean(DemoService.class) + "\n");
 			System.out.println(context.getBean(DemoDao.class) + "\n");
 
-			System.out.println(context.getBean(DemoUpService.class) + "\n");
+			DemoUPService upService = (DemoUPService) context.getBean("demoUpService");
+			System.out.println(upService);
+			upService.doQuery();
 
 			((DemoPDao) context.getBean("demoPDao")).doQuery("ss");
 			System.out.println();
-
-			((DemoImDao) context.getBean("demoImDaoImpl")).doQuery();
 			System.out.println();
 
-			System.out.println(context.getBean(DemoImService.class) + "\n");
+			DemoImDao imDao = (DemoImDao) context.getBean("demoImDaoImpl");
+			System.out.println(imDao);
+			imDao.doQuery();
 			System.out.println();
+
+			DemoImService imService = context.getBean(DemoImService.class);
+			System.out.println(imService);
+			imService.doQuery();
+			System.out.println();
+
 			System.out.println(context.getBean(DemoDownService.class) + "\n");
 			System.out.println();
 		} catch (Exception e) {

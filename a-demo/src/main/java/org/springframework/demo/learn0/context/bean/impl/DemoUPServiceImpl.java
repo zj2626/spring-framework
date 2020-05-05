@@ -2,15 +2,15 @@ package org.springframework.demo.learn0.context.bean.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.demo.learn0.context.bean.DemoDao;
-import org.springframework.demo.learn0.context.bean.DemoImService;
+import org.springframework.demo.learn0.context.bean.DemoUPService;
 
-public class DemoImServiceImpl implements DemoImService {
+public class DemoUPServiceImpl implements DemoUPService {
 
 	@Autowired
 	private DemoDao dao;
 
-	public DemoImServiceImpl() {
-		System.out.println("DemoImService Constructor " + dao);
+	public DemoUPServiceImpl() {
+		System.out.println("DemoUpService Constructor " + dao);
 	}
 
 	@Override

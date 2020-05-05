@@ -436,10 +436,10 @@ class AdviceUsingThisJoinPoint {
 	public void methodExecution() {
 	}
 
-	@Before("methodExecution()")
-	public void entryTrace(JoinPoint jp) {
-		this.lastEntry = jp.toString();
-	}
+//	@Before("methodExecution()")
+//	public void entryTrace(JoinPoint jp) {
+//		this.lastEntry = jp.toString();
+//	}
 }
 
 @Aspect

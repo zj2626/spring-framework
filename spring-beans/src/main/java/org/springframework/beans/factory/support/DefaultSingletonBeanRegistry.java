@@ -203,6 +203,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 		Assert.notNull(beanName, "Bean name must not be null");
 		synchronized (this.singletonObjects) {
 			Object singletonObject = this.singletonObjects.get(beanName);
+			// 工厂中不存在才进行create
 			if (singletonObject == null) {
 				if (this.singletonsCurrentlyInDestruction) {
 					throw new BeanCreationNotAllowedException(beanName,
@@ -219,7 +220,10 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 					this.suppressedExceptions = new LinkedHashSet<>();
 				}
 				try {
+					// 调用模板方法进行对象创建
+					// >>>>>>>>>>>>>>>>>>>>>>>>>
 					singletonObject = singletonFactory.getObject();
+					// >>>>>>>>>>>>>>>>>>>>>>>>>
 					newSingleton = true;
 				}
 				catch (IllegalStateException ex) {

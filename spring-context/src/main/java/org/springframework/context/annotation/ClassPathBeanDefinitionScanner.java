@@ -275,7 +275,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		for (String basePackage : basePackages) {
 			// 扫描basePackages下的包, 把扫描到的bean转化为BeanDefinition 使用asm读取class文件, 得到的beanDefinition类型为 ScannedGenericBeanDefinition
 			Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
-			logger.info("扫描包路径 " + basePackage + " | 扫描到的BeanDefinition个数: " + candidates.size());
+			System.out.println("扫描包路径 " + basePackage + " | 扫描到的BeanDefinition个数: " + candidates.size());
 			for (BeanDefinition candidate : candidates) {
 				// 解析scope
 				ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(candidate);
@@ -298,7 +298,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 					beanDefinitions.add(definitionHolder);
 
 					// 把解析到的beanDefinition 添加到 factory中
-					logger.info("扫描的BeanDefinition注入 " + definitionHolder.getBeanName());
+					System.out.println("扫描的BeanDefinition注入 " + definitionHolder.getBeanName());
 					registerBeanDefinition(definitionHolder, this.registry);
 				}
 			}

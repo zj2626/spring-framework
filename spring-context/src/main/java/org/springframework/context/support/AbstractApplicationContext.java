@@ -479,7 +479,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	public void addBeanFactoryPostProcessor(BeanFactoryPostProcessor postProcessor) {
 		Assert.notNull(postProcessor, "BeanFactoryPostProcessor must not be null");
 		this.beanFactoryPostProcessors.add(postProcessor);
-		logger.info("手动添加BeanFactoryPostProcessor 当前有beanFactoryPostProcessors个数:" + beanFactoryPostProcessors.size() + "; 当前是:" + postProcessor);
+		System.out.println("手动添加BeanFactoryPostProcessor 当前有beanFactoryPostProcessors个数:" + beanFactoryPostProcessors.size() + "; 当前是:" + postProcessor);
 	}
 
 	/**
@@ -516,7 +516,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		synchronized (this.startupShutdownMonitor) {
 			// Prepare this context for refreshing.
 			// 准备环境 设置启动时间/激活标志位
-			logger.info("> refresh___________________________ prepareRefresh ");
+			System.out.println("> refresh___________________________ prepareRefresh ");
 			prepareRefresh();
 
 			// Tell the subclass to refresh the internal bean factory.
@@ -525,7 +525,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 			// Prepare the bean factory for use in this context.
 			// 准备bean工厂 配置一个标准的特征
-			logger.info("> refresh___________________________ prepareBeanFactory [BeanDefinition:" + beanFactory.getBeanDefinitionCount() + " | BeanPostProcessor: " + beanFactory.getBeanPostProcessorCount() + "]");
+			System.out.println("> refresh___________________________ prepareBeanFactory [BeanDefinition:" + beanFactory.getBeanDefinitionCount() + " | BeanPostProcessor: " + beanFactory.getBeanPostProcessorCount() + "]");
 			prepareBeanFactory(beanFactory);
 
 			try {
@@ -535,38 +535,39 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 				// Invoke factory processors registered as beans in the context.
 				// 调用工厂的processors-> BeanFactoryPostProcessors 本质就是执行所有的 BeanFactoryPostProcessor
-				logger.info("> refresh___________________________ invokeBeanFactoryPostProcessors [BeanDefinition:" + beanFactory.getBeanDefinitionCount() + " | BeanPostProcessor: " + beanFactory.getBeanPostProcessorCount() + "]");
+				System.out.println("> refresh___________________________ invokeBeanFactoryPostProcessors [BeanDefinition:" + beanFactory.getBeanDefinitionCount() + " | BeanPostProcessor: " + beanFactory.getBeanPostProcessorCount() + "]");
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
 				// 注册BeanPostProcessors
-				logger.info("> refresh___________________________ registerBeanPostProcessors [BeanDefinition:" + beanFactory.getBeanDefinitionCount() + " | BeanPostProcessor: " + beanFactory.getBeanPostProcessorCount() + "]");
+				System.out.println("> refresh___________________________ registerBeanPostProcessors [BeanDefinition:" + beanFactory.getBeanDefinitionCount() + " | BeanPostProcessor: " + beanFactory.getBeanPostProcessorCount() + "]");
 				registerBeanPostProcessors(beanFactory);
 
 				// Initialize message source for this context.
-				logger.info("> refresh___________________________ initMessageSource [BeanDefinition:" + beanFactory.getBeanDefinitionCount() + " | BeanPostProcessor: " + beanFactory.getBeanPostProcessorCount() + "]");
+				// 国际化
+				System.out.println("> refresh___________________________ initMessageSource [BeanDefinition:" + beanFactory.getBeanDefinitionCount() + " | BeanPostProcessor: " + beanFactory.getBeanPostProcessorCount() + "]");
 				initMessageSource();
 
 				// Initialize event multicaster for this context.
-				logger.info("> refresh___________________________ initApplicationEventMulticaster [BeanDefinition:" + beanFactory.getBeanDefinitionCount() + " | BeanPostProcessor: " + beanFactory.getBeanPostProcessorCount() + "]");
+				System.out.println("> refresh___________________________ initApplicationEventMulticaster [BeanDefinition:" + beanFactory.getBeanDefinitionCount() + " | BeanPostProcessor: " + beanFactory.getBeanPostProcessorCount() + "]");
 				initApplicationEventMulticaster();
 
 				// Initialize other special beans in specific context subclasses.
 				// 没有实现
-				logger.info("> refresh___________________________ onRefresh [BeanDefinition:" + beanFactory.getBeanDefinitionCount() + " | BeanPostProcessor: " + beanFactory.getBeanPostProcessorCount() + "]");
+				System.out.println("> refresh___________________________ onRefresh [BeanDefinition:" + beanFactory.getBeanDefinitionCount() + " | BeanPostProcessor: " + beanFactory.getBeanPostProcessorCount() + "]");
 				onRefresh();
 
 				// Check for listener beans and register them.
-				logger.info("> refresh___________________________ registerListeners [BeanDefinition:" + beanFactory.getBeanDefinitionCount() + " | BeanPostProcessor: " + beanFactory.getBeanPostProcessorCount() + "]");
+				System.out.println("> refresh___________________________ registerListeners [BeanDefinition:" + beanFactory.getBeanDefinitionCount() + " | BeanPostProcessor: " + beanFactory.getBeanPostProcessorCount() + "]");
 				registerListeners();
 
 				// Instantiate all remaining (non-lazy-init) singletons.
 				// 实例化所有的非lazy的单例bean
-				logger.info("\n\n> refresh___________________________ finishBeanFactoryInitialization [BeanDefinition:" + beanFactory.getBeanDefinitionCount() + " | BeanPostProcessor: " + beanFactory.getBeanPostProcessorCount() + "]");
+				System.out.println("\n\n> refresh___________________________ finishBeanFactoryInitialization [BeanDefinition:" + beanFactory.getBeanDefinitionCount() + " | BeanPostProcessor: " + beanFactory.getBeanPostProcessorCount() + "]");
 				finishBeanFactoryInitialization(beanFactory);
 
 				// Last step: publish corresponding event.
-				logger.info("\n\n> refresh___________________________ finishRefresh [BeanDefinition:" + beanFactory.getBeanDefinitionCount() + " | BeanPostProcessor: " + beanFactory.getBeanPostProcessorCount() + "]");
+				System.out.println("\n\n> refresh___________________________ finishRefresh [BeanDefinition:" + beanFactory.getBeanDefinitionCount() + " | BeanPostProcessor: " + beanFactory.getBeanPostProcessorCount() + "]");
 				finishRefresh();
 			}
 
@@ -589,16 +590,16 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			finally {
 				// Reset common introspection caches in Spring's core, since we
 				// might not ever need metadata for singleton beans anymore...
-				logger.info("> refresh___________________________ resetCommonCaches");
+				System.out.println("> refresh___________________________ resetCommonCaches");
 				resetCommonCaches();
 
 				if(beanFactory instanceof DefaultListableBeanFactory){
-					logger.info("> refresh___________________________ finally [BeanDefinition]: \n\t" + Arrays.toString(beanFactory.getBeanDefinitionNames()));
-					logger.info("> refresh___________________________ finally [BeanPostProcessor]: \n\t" + ((DefaultListableBeanFactory)beanFactory).getBeanPostProcessors());
+					System.out.println("> refresh___________________________ finally [BeanDefinition]: \n\t" + Arrays.toString(beanFactory.getBeanDefinitionNames()));
+					System.out.println("> refresh___________________________ finally [BeanPostProcessor]: \n\t" + ((DefaultListableBeanFactory)beanFactory).getBeanPostProcessors());
 				}else{
-					logger.info("> refresh___________________________ finally [BeanDefinition]: " + beanFactory.getBeanDefinitionCount() + " | [BeanPostProcessor]: " + beanFactory.getBeanPostProcessorCount());
+					System.out.println("> refresh___________________________ finally [BeanDefinition]: " + beanFactory.getBeanDefinitionCount() + " | [BeanPostProcessor]: " + beanFactory.getBeanPostProcessorCount());
 				}
-				logger.info("> refresh___________________________ finally [DONE]");
+				System.out.println("> refresh___________________________ finally [DONE]");
 			}
 		}
 	}
@@ -898,6 +899,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		// Register a default embedded value resolver if no bean post-processor
 		// (such as a PropertyPlaceholderConfigurer bean) registered any before:
 		// at this point, primarily for resolution in annotation attribute values.
+		// 检查内置value转换器
 		if (!beanFactory.hasEmbeddedValueResolver()) {
 			beanFactory.addEmbeddedValueResolver(strVal -> getEnvironment().resolvePlaceholders(strVal));
 		}
@@ -915,6 +917,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		beanFactory.freezeConfiguration();
 
 		// Instantiate all remaining (non-lazy-init) singletons.
+		// >>>>>>>>>>>>>>>>>>>>>>>
 		beanFactory.preInstantiateSingletons();
 	}
 

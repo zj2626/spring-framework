@@ -158,7 +158,7 @@ public abstract class AnnotationConfigUtils {
 	 */
 	public static Set<BeanDefinitionHolder> registerAnnotationConfigProcessors(
 			BeanDefinitionRegistry registry, @Nullable Object source) {
-		logger.info("> > > > >注册spring内部的多个BeanDefinition开始 " + registry);
+		System.out.println("> > > > >注册spring内部的多个BeanDefinition开始 " + registry);
 
 		// 得到 beanFactory(DefaultListableBeanFactory)
 		DefaultListableBeanFactory beanFactory = unwrapDefaultListableBeanFactory(registry);
@@ -228,7 +228,7 @@ public abstract class AnnotationConfigUtils {
 			beanDefs.add(registerPostProcessor(registry, def, EVENT_LISTENER_FACTORY_BEAN_NAME));
 		}
 
-		logger.info("> > > > >注册spring内部的多个BeanDefinition结束 当前有BeanDefinition个数:" + beanDefs.size());
+		System.out.println("> > > > >注册spring内部的多个BeanDefinition结束 当前有BeanDefinition个数:" + beanDefs.size());
 		return beanDefs;
 	}
 

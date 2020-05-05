@@ -4,7 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.demo.learn0.context.bean.impl.DemoDownService;
-import org.springframework.demo.learn0.context.bean.impl.DemoUpService;
+import org.springframework.demo.learn0.context.bean.DemoUPService;
+import org.springframework.demo.learn0.context.bean.impl.DemoUPServiceImpl;
 import org.springframework.demo.learn0.context.imports.EnableIm;
 import org.springframework.demo.learn0.context.registrar.MyMapperScan;
 
@@ -15,14 +16,14 @@ import org.springframework.demo.learn0.context.registrar.MyMapperScan;
 public class SpringConfig {
 
 	@Bean
-	public DemoUpService demoUpService(){
+	public DemoUPService demoUpService() {
 		// 当加了@Configuration, 则这里只会调用一次, demoDownService()方法中的调用会被拦截,直接从beanFactory中获取DemoUpService
-		return new DemoUpService();
+		return new DemoUPServiceImpl();
 	}
 
 
 	@Bean
-	public DemoDownService demoDownService(){
+	public DemoDownService demoDownService() {
 		demoUpService();
 		return new DemoDownService();
 	}
