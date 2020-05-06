@@ -134,6 +134,7 @@ class ConfigurationClassBeanDefinitionReader {
 			return;
 		}
 
+		System.out.println("[ConfigurationClassBeanDefinitionReader loadBeanDefinitionsForConfigurationClass] " + configClass);
 		// 注册被 @Import标注的类
 		if (configClass.isImported()) {
 			registerBeanDefinitionForImportedConfigurationClass(configClass);
@@ -174,10 +175,13 @@ class ConfigurationClassBeanDefinitionReader {
 	 */
 	@SuppressWarnings("deprecation")  // for RequiredAnnotationBeanPostProcessor.SKIP_REQUIRED_CHECK_ATTRIBUTE
 	private void loadBeanDefinitionsForBeanMethod(BeanMethod beanMethod) {
+		System.out.println("[ConfigurationClassBeanDefinitionReader loadBeanDefinitionsForBeanMethod] " + beanMethod);
+
 		ConfigurationClass configClass = beanMethod.getConfigurationClass();
 		MethodMetadata metadata = beanMethod.getMetadata();
 		String methodName = metadata.getMethodName();
 
+		// ????
 		// Do we need to mark the bean as skipped by its condition?
 		if (this.conditionEvaluator.shouldSkip(metadata, ConfigurationPhase.REGISTER_BEAN)) {
 			configClass.skippedBeanMethods.add(methodName);
