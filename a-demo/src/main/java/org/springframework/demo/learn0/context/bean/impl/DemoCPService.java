@@ -14,14 +14,18 @@ public class DemoCPService {
 
 	private DemoPDao pDao;
 
+	public DemoCPService() {
+		System.out.println("DemoConstructService 0 Constructor " + dao + " | " + pDao);
+	}
+
 	public DemoCPService(DemoDao dao) {
-		System.out.println("DemoConstructService Constructor " + dao + " | " + pDao);
+		System.out.println("DemoConstructService 1 Constructor " + dao + " | " + pDao);
 		this.dao = dao;
 	}
 
 	@Autowired
 	public DemoCPService(DemoDao dao, DemoPDao pDao) {
-		System.out.println("DemoConstructService Constructor " + dao + " | " + pDao);
+		System.out.println("DemoConstructService 2 Constructor " + dao + " | " + pDao);
 		this.dao = dao;
 		this.pDao = pDao;
 	}

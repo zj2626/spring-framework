@@ -1151,7 +1151,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			}
 		}
 
-		// Candidate constructors for autowiring? 自动装配的时候选择构造器注入
+		// Candidate constructors for autowiring?
+		// 得到用来构造bean的构造方法, 自动装配的时候选择构造器注入, 如果没有明确指定哪个构造方法,则这里返回null, 即使用默认构造方法构建
 		Constructor<?>[] ctors = determineConstructorsFromBeanPostProcessors(beanClass, beanName);
 		if (ctors != null || mbd.getResolvedAutowireMode() == AUTOWIRE_CONSTRUCTOR ||
 				mbd.hasConstructorArgumentValues() || !ObjectUtils.isEmpty(args)) {
@@ -1237,8 +1238,15 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	protected Constructor<?>[] determineConstructorsFromBeanPostProcessors(@Nullable Class<?> beanClass, String beanName)
 			throws BeansException {
 
+		/*
+		1. 如果某个构造方法指定了@Autowired,则该方法作为构造bean的构造方法
+		2. 如果没有@Autowired,且手动添加了一个无参构造方法,则无参构造方法作为构造bean的构造方法, 这里这个方法返回null
+		3. 如果没有@Autowired,且没有一个无参构造方法, bean无法实例化
+		4. 如果没有一个构造方法,则使用默认构造方法(无参构造方法), 这里这个方法返回null
+		 */
 		if (beanClass != null && hasInstantiationAwareBeanPostProcessors()) {
 			for (BeanPostProcessor bp : getBeanPostProcessors()) {
+				// 除了实现类 AutowiredAnnotationBeanPostProcessor,其他的实现的determineCandidateConstructors方法都是直接返回null
 				if (bp instanceof SmartInstantiationAwareBeanPostProcessor) {
 					SmartInstantiationAwareBeanPostProcessor ibp = (SmartInstantiationAwareBeanPostProcessor) bp;
 					Constructor<?>[] ctors = ibp.determineCandidateConstructors(beanClass, beanName);
