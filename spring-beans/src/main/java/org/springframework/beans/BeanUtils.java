@@ -163,7 +163,7 @@ public abstract class BeanUtils {
 	 * @return the new instance
 	 * @throws BeanInstantiationException if the bean cannot be instantiated
 	 * @see Constructor#newInstance
-	 * 通过反射调用构造方法new实例
+	 * 通过反射调用传入的构造方法来new对象实例
 	 */
 	public static <T> T instantiateClass(Constructor<T> ctor, Object... args) throws BeanInstantiationException {
 		Assert.notNull(ctor, "Constructor must not be null");
