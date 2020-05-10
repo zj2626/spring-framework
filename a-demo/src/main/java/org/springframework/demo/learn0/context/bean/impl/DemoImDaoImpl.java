@@ -13,7 +13,7 @@ public class DemoImDaoImpl implements DemoImDao {
 
 	@Override
 	public void doQuery() {
-		System.out.println("query sql " + id);
+		System.out.println("DemoImDao query sql " + id);
 	}
 
 	@Override

@@ -36,7 +36,7 @@ public class DemoService implements InitializingBean {
 	}
 
 	public void doQuery() {
-		System.out.println("do query !");
+		System.out.println("DemoService do query !");
 		dao.doQuery();
 		pDao.doQuery("dd demo");
 	}

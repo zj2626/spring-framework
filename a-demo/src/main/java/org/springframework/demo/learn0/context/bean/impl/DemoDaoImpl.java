@@ -22,7 +22,7 @@ public class DemoDaoImpl implements DemoDao {
 
     @Override
     public void doQuery() {
-        System.out.println("query sql " + id);
+        System.out.println("DemoDao query sql " + id);
     }
 
 	@Override

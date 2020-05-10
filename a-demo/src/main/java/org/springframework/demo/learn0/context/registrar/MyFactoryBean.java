@@ -33,7 +33,7 @@ public class MyFactoryBean implements FactoryBean<Object>, InvocationHandler {
 		// 直接获取方法上的注解中的sql语句->执行(模拟)
 		if (method.isAnnotationPresent(MySelect.class)) {
 			MySelect mySelect = method.getDeclaredAnnotation(MySelect.class);
-			System.out.println("执行sql" + Arrays.toString(mySelect.sql()));
+			System.out.println("执行sql:" + Arrays.toString(mySelect.sql()) + " | 参数:" + Arrays.toString(args));
 		}
 		return null;
 	}
