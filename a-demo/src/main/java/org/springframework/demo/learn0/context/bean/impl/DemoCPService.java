@@ -16,21 +16,24 @@ public class DemoCPService {
 	@Autowired
 	private DemoPDao pDao;
 
-	public DemoCPService() {
-		System.out.println("DemoCPService 0 Constructor " + dao + " | " + upService + " | " + pDao);
-	}
+	//	@Autowired
+	//	public DemoCPService() {
+	//		System.out.println("DemoCPService 0 Constructor " + dao + " | " + upService + " | " + pDao);
+	//	}
 
+	//	@Autowired
 	public DemoCPService(DemoDao dao) {
 		this.dao = dao;
 		System.out.println("DemoCPService 1 Constructor " + dao + " | " + upService + " | " + pDao);
 	}
 
-	@Autowired
+	@Autowired // TODO ???
 	public DemoCPService(DemoUPService upService) {
 		this.upService = upService;
 		System.out.println("DemoCPService 1 Constructor " + dao + " | " + upService + " | " + pDao);
 	}
 
+	//	@Autowired
 	public DemoCPService(DemoPDao pDao) {
 		this.pDao = pDao;
 		System.out.println("DemoCPService 2 Constructor " + dao + " | " + upService + " | " + pDao);
@@ -38,11 +41,11 @@ public class DemoCPService {
 
 	public void doQuery() {
 		System.out.println("DemoCPService do query !");
-		if(null != pDao){
+		if (null != pDao) {
 			System.out.println("pDao != null is true");
 			pDao.doQuery("AAA");
 		}
-		if(null != dao){
+		if (null != dao) {
 			dao.doQuery();
 		}
 	}

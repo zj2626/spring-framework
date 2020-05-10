@@ -121,6 +121,7 @@ class ConstructorResolver {
 		BeanWrapperImpl bw = new BeanWrapperImpl();
 		this.beanFactory.initBeanWrapper(bw);
 
+		// 最终决定的实例化对象的构造方法: constructorToUse, 构造方法需要的参数: argsHolderToUse
 		Constructor<?> constructorToUse = null;
 		ArgumentsHolder argsHolderToUse = null;
 		Object[] argsToUse = null;
@@ -131,6 +132,7 @@ class ConstructorResolver {
 		else {
 			Object[] argsToResolve = null;
 			synchronized (mbd.constructorArgumentLock) {
+				// 获得已解析的构造方法, bean初始化到这里的时候还没有解析, 所以constructorArgumentsResolved是false, 解析过一次后设置mbd的属性为true
 				constructorToUse = (Constructor<?>) mbd.resolvedConstructorOrFactoryMethod;
 				if (constructorToUse != null && mbd.constructorArgumentsResolved) {
 					// Found a cached constructor...
@@ -145,10 +147,12 @@ class ConstructorResolver {
 			}
 		}
 
+		// 开始解析构造方法
 		if (constructorToUse == null || argsToUse == null) {
 			// Take specified constructors, if any.
 			Constructor<?>[] candidates = chosenCtors;
 			if (candidates == null) {
+				// 如果没有指定构造方法,就获取其所有构造方法
 				Class<?> beanClass = mbd.getBeanClass();
 				try {
 					candidates = (mbd.isNonPublicAccessAllowed() ?
@@ -161,6 +165,7 @@ class ConstructorResolver {
 				}
 			}
 
+			// 判断是不是只有一个无参构造方法,是的话直接通过无参构造方法构建并返回
 			if (candidates.length == 1 && explicitArgs == null && !mbd.hasConstructorArgumentValues()) {
 				Constructor<?> uniqueCandidate = candidates[0];
 				if (uniqueCandidate.getParameterCount() == 0) {
@@ -175,25 +180,35 @@ class ConstructorResolver {
 			}
 
 			// Need to resolve the constructor.
+			// 判断是否需要通过构造方法自动注入, 判断构造方法是否为空
 			boolean autowiring = (chosenCtors != null ||
 					mbd.getResolvedAutowireMode() == AutowireCapableBeanFactory.AUTOWIRE_CONSTRUCTOR);
 			ConstructorArgumentValues resolvedValues = null;
 
+			// 最小参数个数
 			int minNrOfArgs;
 			if (explicitArgs != null) {
 				minNrOfArgs = explicitArgs.length;
 			}
 			else {
+				// cargs 用来存放构造方法参数值, 对于下标形式的使用map, 对于非下标的使用list
 				ConstructorArgumentValues cargs = mbd.getConstructorArgumentValues();
 				resolvedValues = new ConstructorArgumentValues();
+
+				// 确定构造方法的参数数量
 				minNrOfArgs = resolveConstructorArguments(beanName, mbd, bw, cargs, resolvedValues);
 			}
 
+			// 传入的构造方法进行排序
 			AutowireUtils.sortConstructors(candidates);
+
+			// 定义 {差异变量}
 			int minTypeDiffWeight = Integer.MAX_VALUE;
+			// 定义 有歧义的构造方法
 			Set<Constructor<?>> ambiguousConstructors = null;
 			LinkedList<UnsatisfiedDependencyException> causes = null;
 
+			// 循环所有的构造方法
 			for (Constructor<?> candidate : candidates) {
 				Class<?>[] paramTypes = candidate.getParameterTypes();
 

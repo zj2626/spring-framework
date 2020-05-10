@@ -1156,7 +1156,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		Constructor<?>[] ctors = determineConstructorsFromBeanPostProcessors(beanClass, beanName);
 		if (ctors != null || mbd.getResolvedAutowireMode() == AUTOWIRE_CONSTRUCTOR ||
 				mbd.hasConstructorArgumentValues() || !ObjectUtils.isEmpty(args)) {
-			// 构造器注入方式 创建对象
+			// 构造器注入方式 创建对象 (无参构造方法指定@Autowired也会进入这里)
 			return autowireConstructor(beanName, mbd, ctors, args);
 		}
 
