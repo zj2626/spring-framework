@@ -33,8 +33,9 @@ public class DemoCPService {
 		System.out.println("DemoCPService 1 Constructor " + dao + " | " + upService + " | " + pDao);
 	}
 
-	//	@Autowired
-	public DemoCPService(DemoPDao pDao) {
+//	@Autowired
+	public DemoCPService(DemoDao dao, DemoPDao pDao) {
+		this.dao = dao;
 		this.pDao = pDao;
 		System.out.println("DemoCPService 2 Constructor " + dao + " | " + upService + " | " + pDao);
 	}

@@ -199,7 +199,7 @@ class ConstructorResolver {
 				minNrOfArgs = resolveConstructorArguments(beanName, mbd, bw, cargs, resolvedValues);
 			}
 
-			// 传入的构造方法进行排序
+			// 传入的构造方法进行排序: 排序规则: 首先按照访问权限大的在前, 其次按照参数个数多的在前
 			AutowireUtils.sortConstructors(candidates);
 
 			// 定义 {差异变量}
@@ -208,7 +208,7 @@ class ConstructorResolver {
 			Set<Constructor<?>> ambiguousConstructors = null;
 			LinkedList<UnsatisfiedDependencyException> causes = null;
 
-			// 循环所有的构造方法
+			// 循环所有的构造方法 TODO ???
 			for (Constructor<?> candidate : candidates) {
 				Class<?>[] paramTypes = candidate.getParameterTypes();
 
