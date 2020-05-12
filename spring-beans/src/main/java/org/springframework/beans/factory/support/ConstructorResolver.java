@@ -297,6 +297,7 @@ class ConstructorResolver {
 			}
 		}
 
+		// 调用构造方法进行对象实例化
 		Assert.state(argsToUse != null, "Unresolved constructor arguments");
 		bw.setBeanInstance(instantiate(beanName, mbd, constructorToUse, argsToUse));
 		return bw;
