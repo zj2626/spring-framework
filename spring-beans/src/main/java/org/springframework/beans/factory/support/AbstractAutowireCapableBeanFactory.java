@@ -568,7 +568,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 						mbd.getResourceDescription(), beanName, "Initialization of bean failed", ex);
 			}
 		}
-		System.out.println("[AbstractAutowireCapableBeanFactory doCreateBean    ] ########### 3 ---> " + exposedObject);
+		System.out.println("[AbstractAutowireCapableBeanFactory doCreateBean    ] ########### 3 ---> " + exposedObject + "\n\n");
 
 		if (earlySingletonExposure) {
 			Object earlySingletonReference = getSingleton(beanName, false);

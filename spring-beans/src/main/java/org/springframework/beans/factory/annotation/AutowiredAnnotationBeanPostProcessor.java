@@ -615,6 +615,7 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 				Assert.state(beanFactory != null, "No BeanFactory available");
 				TypeConverter typeConverter = beanFactory.getTypeConverter();
 				try {
+					// 从工厂中得到要依赖的对象的bean实例, 后面会通过field.set()设置到属性中
 					value = beanFactory.resolveDependency(desc, beanName, autowiredBeanNames, typeConverter);
 				}
 				catch (BeansException ex) {
