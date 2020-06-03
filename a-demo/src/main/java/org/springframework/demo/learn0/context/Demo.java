@@ -3,7 +3,7 @@ package org.springframework.demo.learn0.context;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.demo.learn0.context.bean.*;
-import org.springframework.demo.learn0.context.bean.impl.DemoCPService;
+import org.springframework.demo.learn0.context.bean.DemoCPService;
 import org.springframework.demo.learn0.context.bean.impl.DemoDownService;
 import org.springframework.demo.learn0.context.bean.impl.DemoService;
 import org.springframework.demo.learn0.context.bean.DemoUPService;

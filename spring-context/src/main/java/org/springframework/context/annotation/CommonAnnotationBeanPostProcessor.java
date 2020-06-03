@@ -316,6 +316,11 @@ public class CommonAnnotationBeanPostProcessor extends InitDestroyAnnotationBean
 		return true;
 	}
 
+	/*
+	主要处理@Resource, @PostConstract, @PreDestroy注解的实现方法
+
+	会调用到本类内部类中的 org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.ResourceElement.getResourceToInject 方法
+	 */
 	@Override
 	public PropertyValues postProcessProperties(PropertyValues pvs, Object bean, String beanName) {
 		InjectionMetadata metadata = findResourceMetadata(beanName, bean.getClass(), pvs);

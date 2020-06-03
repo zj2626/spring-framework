@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class DemoSimpleDaoImpl implements DemoSimpleDao {
 	@Autowired
-	private DemoCPService cpService;
+	private DemoCPServiceImpl cpService;
 
 	public DemoSimpleDaoImpl() {
 		System.out.println("DemoSimpleDao Constructor " + cpService);
