@@ -461,7 +461,7 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 	}
 
 	private InjectionMetadata buildAutowiringMetadata(final Class<?> clazz) {
-		List<InjectionMetadata.InjectedElement> elements = new ArrayList<>();
+			List<InjectionMetadata.InjectedElement> elements = new ArrayList<>();
 		Class<?> targetClass = clazz;
 
 		do {

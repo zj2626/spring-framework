@@ -548,6 +548,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			}
 		}
 
+		System.out.println("[DefaultListableBeanFactory doGetBeanNamesForType] " + type + " | " + result);
 		return StringUtils.toStringArray(result);
 	}
 

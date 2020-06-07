@@ -38,6 +38,9 @@ public class Demo {
 		return null;
 	}
 
+	public static void print0(ApplicationContext context){
+	}
+
 	public static void print1(ApplicationContext context){
 		DemoService service = context.getBean(DemoService.class);
 		System.out.println(service + "\n");
@@ -87,6 +90,6 @@ public class Demo {
 	 */
 	public static void main(String[] args) {
 		ApplicationContext context = getContext();
-		print7(context);
+		print0(context);
 	}
 }
