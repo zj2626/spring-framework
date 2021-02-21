@@ -38,9 +38,6 @@ public class Demo {
 		return null;
 	}
 
-	public static void print0(ApplicationContext context){
-	}
-
 	public static void print1(ApplicationContext context){
 		DemoService service = context.getBean(DemoService.class);
 		System.out.println(service + "\n");
@@ -83,6 +80,12 @@ public class Demo {
 		System.out.println(demoCPService);
 	}
 
+	public static void print8(ApplicationContext context){
+		DemoController demoController = context.getBean(DemoController.class);
+		System.out.println(demoController);
+		demoController.info();
+	}
+
 	/**
 	 * * @Junit见test目录
 	 *
@@ -90,6 +93,6 @@ public class Demo {
 	 */
 	public static void main(String[] args) {
 		ApplicationContext context = getContext();
-		print0(context);
+		print8(context);
 	}
 }
